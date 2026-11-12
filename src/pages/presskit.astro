@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import IconRow from '../components/IconRow.astro';
+import { LISTEN_ICONS } from '../lib/site';
+const zip = '/files/TVCC_Presskit_2026.zip';
+---
+<Base title="The Vintage Cinema Club - Next to the Body (Live)" path="/presskit" noindex bg="stretch">
+  <div class="col page">
+    <h2 class="brand pink">THE VINTAGE CINEMA CLUB</h2>
+    <h5 class="headline">
+      <br />
+      <a class="dl" href={zip} download="TVCC_Presskit_2026.zip" target="_blank">Download</a><br />
+      <a class="pk pink" href={zip} download="TVCC_Presskit_2026.zip" target="_blank">Presskit</a>
+    </h5>
+    <IconRow items={LISTEN_ICONS} class="icons" />
+    <h5 class="home-link"><a href="/" target="_blank">zur Hauptseite<br />www.thevintagecinemaclub.com</a></h5>
+  </div>
+</Base>
+
+<style>
+  :global(body.bg-stretch) { background: #000; }
+  .page { position: relative; height: 692px; text-align: center; }
+  .brand { font-size: 72px; line-height: 90px; padding-left: 29px; text-align: left; white-space: nowrap; }
+  .headline { margin-left: 220px; width: 601px; line-height: 38.5px; }
+  .dl { font-size: 58px; color: #fff; text-decoration: underline; }
+  .pk { font-size: 28px; text-decoration: underline; }
+  .page :global(.icons) { margin: 46px 0 0 46px; }
+  .home-link { margin: 50px 0 0 46px; font-size: 28px; line-height: 38.5px; }
+  .home-link a { color: var(--pink); }
+
+  @media (max-width: 1000px) {
+    .page { height: auto; min-height: 100vh; padding: 0 var(--gutter) 60px; }
+    .brand { font-size: clamp(26px, 7.2vw, 72px); line-height: 1.25; padding: 0; text-align: center; white-space: normal; }
+    .headline { margin: 10px auto 0; width: auto; }
+    .page :global(.icons), .home-link { margin-left: 0; }
+  }
+  @media (max-width: 760px) {
+    .dl { font-size: 40px; }
+    .pk { font-size: 20px; }
+    .home-link { font-size: 18px; line-height: 28px; }
+  }
+</style>

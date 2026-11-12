@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Seite nicht gefunden | The Vintage Cinema Club" path="/404" bg="fixed" noindex>
+  <div class="nf">
+    <h1 class="pink">The Vintage Cinema Club</h1>
+    <p>Diese Seite gibt es leider nicht.</p>
+    <p><a class="pink" href="/">zur Hauptseite</a></p>
+  </div>
+</Base>
+<style>
+  .nf { min-height: 100vh; display: grid; place-content: center; gap: 18px; text-align: center; padding: 24px; font-size: 22px; }
+  .nf h1 { font-size: clamp(30px, 6vw, 60px); letter-spacing: .2em; }
+  .nf a { text-decoration: underline; }
+</style>

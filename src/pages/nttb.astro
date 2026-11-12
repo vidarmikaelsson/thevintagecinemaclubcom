@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+import IconRow from '../components/IconRow.astro';
+import MusicPlayer from '../components/MusicPlayer.astro';
+import VideoBox from '../components/VideoBox.astro';
+import { LISTEN_ICONS, SITE_URL } from '../lib/site';
+---
+<Base title="The Vintage Cinema Club - Next to the Body (Live)" path="/nttb" noindex bg="stretch" ogImage="149dd1_8cd6b85938914e45916dcd8be443ffd2.jpg">
+  <div id="top"></div>
+  <div class="col page">
+    <h2 class="brand pink">THE VINTAGE CINEMA CLUB</h2>
+    <h5 class="headline"><span class="hl-big">New Single</span><br /><span class="pink">Veröffentlichung am 10.07.2026</span></h5>
+
+    <div class="shift">
+      <Img src="149dd1_8cd6b85938914e45916dcd8be443ffd2.jpg" alt="NTTB_cover.jpg" w={594} h={596} class="cover" loading="eager" />
+      <VideoBox src="/video/nttb-live-rockhouse.mp4" poster="149dd1_180a6d57f6e04963bcac8e840ceb1449f000.jpg" width={594} height={335} class="live" label="Next to the Body – live im Rockhouse Salzburg abspielen" />
+    </div>
+    <div class="player">
+      <MusicPlayer
+        album="nttb" variant="compact" width={705} height={143} autoplay albumShare listArtist
+        theme={{ bg: 'rgba(219,56,183,.23)', text: '#fff', control: '#fff', divider: 'rgba(255,255,255,.35)', active: 'rgb(191,191,191)', font: 'var(--f-display)', sizes: [27, 27, 12, 12] }}
+        shareUrl={`${SITE_URL}/nttb`}
+      />
+    </div>
+
+    <div class="story">
+      <h6>„Next to the Body“ begleitet uns schon seit Jahren auf der Bühne, lange bevor wir uns entschieden haben, den Song zu veröffentlichen.</h6>
+      <h6>Live aufgenommen im Rockhouse Salzburg am 12.12.2025. Die Version zeigt den Song genau so, wie wir ihn live spielen: etwas schneller, direkter und mit der Energie eines Konzertabends.</h6>
+      <h6>Eine Studiofassung ist bereits in Planung. Für den Moment wollten wir jedoch genau diesen Augenblick festhalten und den Song so veröffentlichen, wie er an diesem Abend geklungen hat.</h6>
+      <h6><br /></h6>
+      <h6>The Vintage Cinema Club</h6>
+    </div>
+
+    <h6 class="listen pink">Jetzt anhören:</h6>
+    <IconRow items={LISTEN_ICONS} class="icons" />
+    <h5 class="home-link"><a href="/" target="_blank">zur Hauptseite<br />www.thevintagecinemaclub.com</a></h5>
+  </div>
+</Base>
+
+<style>
+  .page { position: relative; min-height: 2000px; padding-bottom: 27px; text-align: center; }
+  .brand { font-size: 72px; line-height: 90px; padding-left: 29px; text-align: left; white-space: nowrap; }
+  .headline { margin: 0 0 0 220px; width: 601px; height: 159px; line-height: 38.5px; padding-top: 38.5px; }
+  .hl-big { font-size: 58px; color: #fff; }
+  .headline .pink { font-size: 28px; }
+  .shift { margin-left: 216px; width: 594px; }
+  .cover { width: 594px; height: 596px; }
+  .shift :global(.live) { margin-top: 18px; }
+  .player { margin: 16px 0 0 161px; width: 705px; }
+  .story { width: 904px; margin: 11px auto 0; font-size: 23px; line-height: 32.43px; }
+  .listen { margin-top: 53px; font-size: 22px; line-height: 31px; }
+  .page :global(.icons) { margin-top: 23px; }
+  .home-link { margin-top: 50px; font-size: 28px; line-height: 38.5px; }
+  .home-link a { color: var(--pink); }
+
+  @media (max-width: 1000px) {
+    .page { min-height: 0; padding-inline: var(--gutter); }
+    .brand { font-size: clamp(26px, 7.2vw, 72px); line-height: 1.25; padding: 0; text-align: center; white-space: normal; }
+    .headline { margin: 18px auto 0; width: auto; height: auto; padding: 0; }
+    .shift, .player { margin-left: auto; margin-right: auto; width: 100%; max-width: 594px; }
+    .player { max-width: 705px; margin-top: 16px; }
+    .cover { width: 100%; height: auto; }
+    .story { width: auto; margin-top: 40px; }
+  }
+  @media (max-width: 760px) {
+    .hl-big { font-size: 38px; }
+    .headline { line-height: 34px; }
+    .headline .pink { font-size: 18px; }
+    .story { font-size: 16px; line-height: 23px; }
+    .listen { margin-top: 30px; font-size: 18px; }
+    .home-link { font-size: 18px; line-height: 28px; margin-top: 36px; }
+  }
+</style>

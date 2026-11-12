@@ -1,0 +1,491 @@
+---
+/**
+ * Re-implementation of the Wix Music player widget.
+ * Layout variants mirror the original widget layouts:
+ *   card    – vertical, album cover on top (home page "Selection" / "Fashion")
+ *   list    – vertical, no cover (G5 Indie Night)
+ *   wide    – horizontal: cover or big round play button + info (Heimo Erbse, Saturday Overdrive)
+ *   compact – one-line bar with small cover (Next to the Body)
+ * All tracks are self-hosted MP3s from /public/audio.
+ */
+import Img from './Img.astro';
+import music from '../data/music.json';
+
+type AlbumKey = keyof typeof music;
+
+interface Theme {
+  bg: string; text: string; control: string; divider: string; active: string;
+  /** font family for all texts */
+  font: string;
+  /** font sizes in px: [title, subtitle, list, small/time] */
+  sizes?: [number, number, number, number];
+}
+
+interface Props {
+  album: AlbumKey;
+  variant: 'card' | 'list' | 'wide' | 'compact';
+  /** desktop box size of the original widget */
+  width: number;
+  height: number;
+  theme: Theme;
+  autoplay?: boolean;
+  /** show "/ artist" after the track title in the playlist */
+  listArtist?: boolean;
+  /** show share icons in the track rows */
+  trackShare?: boolean;
+  /** show the album share button */
+  albumShare?: boolean;
+  shareLabel?: string;
+  /** Wix "Get Album" button target */
+  getAlbumUrl?: string;
+  /** page URL used for share actions */
+  shareUrl: string;
+  /** info lines order for "wide": artist/title/album */
+  class?: string;
+}
+
+const {
+  album: key, variant, width, height, theme, autoplay = false, listArtist = false, trackShare = false,
+  albumShare = false, shareLabel = 'Share', getAlbumUrl, shareUrl, class: cls,
+} = Astro.props;
+const album = music[key];
+const sizes = theme.sizes ?? [20, 16, 20, 12];
+const first = album.tracks[0];
+const tracksJson = JSON.stringify({ album: album.title, tracks: album.tracks });
+const style = [
+  `--mp-w:${width}px`, `--mp-h:${height}px`, `--mp-bg:${theme.bg}`, `--mp-text:${theme.text}`,
+  `--mp-ctl:${theme.control}`, `--mp-div:${theme.divider}`, `--mp-active:${theme.active}`, `--mp-font:${theme.font}`,
+  `--mp-fs1:${sizes[0]}px`, `--mp-fs2:${sizes[1]}px`, `--mp-fs3:${sizes[2]}px`, `--mp-fs4:${sizes[3]}px`,
+].join(';');
+const coverSize = variant === 'card' ? 300 : variant === 'wide' ? 170 : 80;
+
+const fmtTime = (s: string) => s; // durations are stored as mm:ss
+const timeSep = variant === 'card' ? '/' : ' / ';
+---
+<div
+  class:list={['mp', `mp--${variant}`, { 'mp--nocover': !album.cover }, cls]}
+  style={style}
+  data-player
+  data-autoplay={autoplay ? '' : undefined}
+  data-variant={variant}
+  data-list-artist={listArtist ? '' : undefined}
+  data-share-url={shareUrl}
+  data-time-sep={timeSep}
+  role="region"
+  aria-label={`Musik-Player: ${album.title}`}
+>
+  <script type="application/json" set:html={tracksJson} />
+  <audio preload="none"></audio>
+
+  {variant === 'card' && (
+    <div class="mp-top">
+      {getAlbumUrl && <a class="mp-btn" href={getAlbumUrl} target="_blank" rel="noreferrer noopener">Get Album</a>}
+      <button class="mp-btn mp-share-btn" type="button" data-share>{shareLabel}</button>
+    </div>
+  )}
+
+  {album.cover ? (
+    <div class="mp-cover">
+      <Img src={album.cover} alt={album.title} w={coverSize} h={coverSize} />
+      {variant === 'compact' && (
+        <button class="mp-cover-play" type="button" data-play aria-label="Abspielen">
+          <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+          <svg class="i-pause" viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>
+        </button>
+      )}
+    </div>
+  ) : variant === 'wide' && (
+    <button class="mp-bigplay" type="button" data-play aria-label="Abspielen">
+      <svg class="i-play" viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="currentColor"/></svg>
+      <svg class="i-pause" viewBox="0 0 24 24"><path d="M8 6h2.6v12H8zM13.4 6H16v12h-2.6z" fill="currentColor"/></svg>
+    </button>
+  )}
+
+  <div class="mp-info">
+    {variant === 'wide' ? (
+      <>
+        <p class="mp-l1" data-artist>{first.artist}</p>
+        <p class="mp-l2" data-title>{first.title}</p>
+        <p class="mp-l3">{album.title}</p>
+      </>
+    ) : variant === 'compact' ? (
+      <>
+        <p class="mp-l1" data-title>{first.title}</p>
+        <p class="mp-l2" data-artist>{first.artist}</p>
+      </>
+    ) : (
+      <>
+        <p class="mp-l1" data-title>{first.title}</p>
+        <p class="mp-l2"><span data-artist>{first.artist}</span> / {album.title}</p>
+      </>
+    )}
+  </div>
+
+  {(variant === 'wide' || variant === 'compact') && albumShare && (
+    <button class="mp-icon mp-share-icon" type="button" data-share aria-label="Teilen">
+      <svg viewBox="0 0 24 24"><circle cx="17" cy="6" r="2.2"/><circle cx="7" cy="12" r="2.2"/><circle cx="17" cy="18" r="2.2"/><path d="M8.9 11l6.2-3.6M8.9 13l6.2 3.6" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+    </button>
+  )}
+
+  <div class="mp-controls">
+    {!(variant === 'compact' || (variant === 'wide' && !album.cover)) && (
+      <button class="mp-icon mp-play" type="button" data-play aria-label="Abspielen">
+        <svg class="i-play" viewBox="0 0 24 24"><path d="M6 3.5v17l15-8.5z" fill="currentColor"/></svg>
+        <svg class="i-pause" viewBox="0 0 24 24"><path d="M5 3.5h4.5v17H5zM14.5 3.5H19v17h-4.5z" fill="currentColor"/></svg>
+      </button>
+    )}
+    {variant !== 'compact' && (
+      <>
+        <button class="mp-icon mp-prev" type="button" data-prev aria-label="Vorheriger Titel"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6L18 18V6z" fill="currentColor"/></svg></button>
+        <button class="mp-icon mp-next" type="button" data-next aria-label="Nächster Titel"><svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z" fill="currentColor"/></svg></button>
+      </>
+    )}
+    <div class="mp-progress" data-progress role="slider" tabindex="0" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <span class="mp-buffer" data-buffer></span>
+      <span class="mp-fill" data-fill></span>
+      <span class="mp-knob" data-knob></span>
+    </div>
+    {variant !== 'compact' && (
+      <span class="mp-time"><span data-cur>00:00</span>{timeSep}<span data-dur>{fmtTime(first.duration)}</span></span>
+      <button class="mp-icon mp-vol" type="button" data-mute aria-label="Stumm schalten">
+        <svg class="i-vol" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15 9c1 .8 1.5 1.8 1.5 3s-.5 2.2-1.5 3M17.5 6.8c1.7 1.4 2.6 3.1 2.6 5.2s-.9 3.8-2.6 5.2" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+        <svg class="i-mute" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    )}
+    <button class="mp-icon mp-listtoggle" type="button" data-list-toggle aria-label="Playlist ein-/ausblenden" aria-expanded={variant === 'compact' ? 'false' : 'true'}>
+      <svg viewBox="0 0 24 24"><path d="M8 4v11.2A2.8 2.8 0 1 1 6.6 13V4z" fill="currentColor"/><path d="M12 6h9M12 10h9M12 14h6" stroke="currentColor" stroke-width="1.5"/></svg>
+    </button>
+  </div>
+
+  <ol class="mp-list" data-list hidden={variant === 'compact'}>
+    {album.tracks.map((t, i) => (
+      <li class="mp-row" data-index={i}>
+        <button class="mp-row-btn" type="button" data-track={i} aria-label={`Titel ${i + 1} abspielen: ${t.title}`}>
+          <span class="mp-num">
+            <span class="n">{i + 1}</span>
+            <svg class="i-eq" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path class="p" d="M9.6 8h1.6v8H9.6zM12.8 8h1.6v8h-1.6z" fill="currentColor"/><path class="pl" d="M10 8v8l6-4z" fill="currentColor"/></svg>
+          </span>
+          <span class="mp-row-title">{t.title}{listArtist && ` / ${t.artist}`}</span>
+          {!trackShare && <span class="mp-row-dur">{t.duration}</span>}
+        </button>
+        {trackShare && (
+          <button class="mp-icon mp-row-share" type="button" data-share aria-label={`${t.title} teilen`}>
+            <svg viewBox="0 0 24 24"><circle cx="17" cy="6" r="2.2"/><circle cx="7" cy="12" r="2.2"/><circle cx="17" cy="18" r="2.2"/><path d="M8.9 11l6.2-3.6M8.9 13l6.2 3.6" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+          </button>
+        )}
+      </li>
+    ))}
+  </ol>
+
+  <div class="mp-sharepop" data-sharepop hidden>
+    <a data-net="facebook" target="_blank" rel="noreferrer noopener">Facebook</a>
+    <a data-net="twitter" target="_blank" rel="noreferrer noopener">Twitter</a>
+    <a data-net="pinterest" target="_blank" rel="noreferrer noopener">Pinterest</a>
+    <a data-net="tumblr" target="_blank" rel="noreferrer noopener">Tumblr</a>
+    <button type="button" data-net="copy">Link kopieren</button>
+  </div>
+</div>
+
+<style>
+  .mp { position: relative; width: 100%; max-width: var(--mp-w); height: var(--mp-h); background: var(--mp-bg); color: var(--mp-text); font-family: var(--mp-font); display: grid; overflow: hidden; text-align: left; }
+  .mp p { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mp svg { display: block; }
+  .mp-icon { display: grid; place-items: center; color: var(--mp-ctl); flex: none; }
+  .mp-icon svg { width: 22px; height: 22px; }
+  .mp-icon svg circle { fill: currentColor; }
+  .mp .i-pause, .mp .i-mute { display: none; }
+  .mp.is-playing .i-play { display: none; }
+  .mp.is-playing .i-pause { display: block; }
+  .mp.is-muted .i-vol { display: none; }
+  .mp.is-muted .i-mute { display: block; }
+
+  /* controls */
+  .mp-controls { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .mp-play svg { width: 26px; height: 26px; }
+  .mp-prev svg, .mp-next svg { width: 16px; height: 16px; }
+  .mp-progress { position: relative; flex: 1 1 auto; height: 18px; cursor: pointer; touch-action: none; min-width: 60px; }
+  .mp-progress::before, .mp-buffer, .mp-fill { content: ''; position: absolute; left: 0; top: 50%; height: 4px; margin-top: -2px; border-radius: 2px; }
+  .mp-progress::before { right: 0; background: color-mix(in srgb, var(--mp-ctl) 25%, transparent); }
+  .mp-buffer { width: 0; background: color-mix(in srgb, var(--mp-ctl) 45%, transparent); }
+  .mp-fill { width: 0; background: var(--mp-ctl); }
+  .mp-knob { position: absolute; top: 50%; left: 0; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%; background: var(--mp-ctl); }
+  .mp-time { font-size: var(--mp-fs4); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  /* buttons (Share / Get Album) */
+  .mp-top { display: flex; justify-content: flex-end; gap: 10px; }
+  .mp-top .mp-btn:first-child:not(:only-child) { margin-right: auto; }
+  .mp-btn { font: 400 18px/22px var(--f-serif); color: var(--mp-text); border: 1px solid var(--mp-text); padding: 7px 13px; text-decoration: none; background: transparent; white-space: nowrap; }
+  .mp-btn:hover { background: color-mix(in srgb, var(--mp-text) 15%, transparent); }
+
+  .mp-cover { position: relative; overflow: hidden; }
+  .mp-cover img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* playlist */
+  .mp-list { list-style: none; margin: 0; padding: 0; overflow-y: auto; min-height: 0; scrollbar-width: thin; }
+  .mp-row { display: flex; align-items: center; border-top: 1px solid var(--mp-div); }
+  .mp-row:last-child { border-bottom: 1px solid var(--mp-div); }
+  .mp-row-btn { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; text-align: left; padding: 0; height: 100%; font-size: var(--mp-fs3); color: inherit; }
+  .mp-num { position: relative; flex: none; width: 18px; font-size: calc(var(--mp-fs3) * .8); }
+  .mp-num .i-eq { display: none; width: 22px; height: 22px; margin-left: -3px; }
+  .mp-num .i-eq .pl { display: none; }
+  /* only the horizontal layout without cover swaps the number for a play/pause icon */
+  .mp--wide.mp--nocover .mp-row.is-current .mp-num .n { display: none; }
+  .mp--wide.mp--nocover .mp-row.is-current .mp-num .i-eq { display: block; }
+  .mp--wide.mp--nocover:not(.is-playing) .mp-row.is-current .i-eq .p { display: none; }
+  .mp--wide.mp--nocover:not(.is-playing) .mp-row.is-current .i-eq .pl { display: block; }
+  .mp-row-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mp-row-dur { flex: none; font-size: calc(var(--mp-fs3) * .8); font-variant-numeric: tabular-nums; }
+  .mp-row-btn:hover .mp-row-title { opacity: .75; }
+  .mp-row-share svg { width: 16px; height: 16px; }
+  .mp.list-hidden .mp-list { visibility: hidden; }
+
+  /* share popover */
+  .mp-sharepop { position: absolute; z-index: 5; right: 12px; top: 12px; display: flex; flex-direction: column; background: #fff; color: #000; font: 14px/1 var(--f-sans); box-shadow: 0 4px 18px rgba(0,0,0,.35); min-width: 150px; }
+  .mp-sharepop[hidden] { display: none; }
+  .mp-sharepop a, .mp-sharepop button { padding: 11px 14px; text-align: left; text-decoration: none; color: #000; font: inherit; cursor: pointer; }
+  .mp-sharepop a:hover, .mp-sharepop button:hover { background: #f1e3ee; }
+
+  /* ---- card (vertical with cover) ---- */
+  .mp--card { grid-template-rows: auto auto auto auto minmax(0, 1fr); padding: 23px 20px 0; row-gap: 0; }
+  .mp--card .mp-top { height: 38px; }
+  .mp--card .mp-cover { margin-top: 13px; aspect-ratio: 1; width: 100%; }
+  .mp--card .mp-info { margin-top: 17px; }
+  .mp--card .mp-l1 { font-size: var(--mp-fs1); line-height: 1.25; }
+  .mp--card .mp-l2 { font-size: var(--mp-fs2); line-height: 1.25; margin-top: 4px; }
+  .mp--card .mp-controls { margin: 12px 0 16px; gap: 8px; }
+  .mp--card .mp-time { font-size: 11px; }
+  .mp--card .mp-progress { margin-left: 2px; }
+  .mp--card .mp-row { height: 55px; }
+  .mp--card .mp-list { margin-bottom: 0; }
+
+  /* ---- list (vertical, no cover) ---- */
+  .mp--list { grid-template-rows: auto auto minmax(0, 1fr); padding: 18px 20px 0; }
+  .mp--list .mp-l1 { font-size: var(--mp-fs3); line-height: 1.2; }
+  .mp--list .mp-l2 { font-size: var(--mp-fs1); line-height: 1.3; margin-top: 4px; }
+  .mp--list .mp-controls { margin: 18px 0 24px; }
+  .mp--list .mp-time { font-size: var(--mp-fs3); }
+  .mp--list .mp-row { height: 47px; }
+  .mp--list .mp-row-btn { font-size: var(--mp-fs4); gap: 18px; }
+  .mp--list .mp-row-dur, .mp--list .mp-num { font-size: var(--mp-fs4); }
+
+  /* ---- wide (horizontal) ---- */
+  .mp--wide { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: auto auto minmax(0, 1fr); column-gap: 25px; padding: 20px 20px 0; }
+  .mp--wide .mp-cover { grid-row: 1 / span 2; width: 170px; height: 170px; }
+  .mp--wide .mp-info { grid-column: 2; align-self: start; padding-top: 8px; }
+  .mp--wide .mp-l1, .mp--wide .mp-l3 { font-size: var(--mp-fs2); line-height: 1.5; }
+  .mp--wide .mp-l2 { font-size: var(--mp-fs1); line-height: 1.5; margin: 3px 0; }
+  .mp--wide .mp-share-icon { grid-column: 3; grid-row: 1; align-self: start; width: 41px; height: 41px; border: 1px solid var(--mp-ctl); }
+  .mp--wide .mp-share-icon svg { width: 16px; height: 16px; }
+  .mp--wide .mp-controls { grid-column: 2 / span 2; grid-row: 2; align-self: end; flex-wrap: wrap; column-gap: 12px; row-gap: 14px; padding-bottom: 8px; }
+  .mp--wide .mp-controls .mp-progress { order: 10; flex-basis: 100%; }
+  .mp--wide .mp-controls .mp-time { margin-right: auto; font-size: 11px; opacity: .9; }
+  .mp--wide .mp-list { grid-column: 1 / -1; grid-row: 3; margin-top: 12px; }
+  .mp--wide .mp-row { height: 53px; }
+  .mp--wide .mp-row-btn { gap: 18px; }
+
+  /* wide without cover – Saturday Overdrive */
+  .mp--wide.mp--nocover { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); padding: 28px 20px 0; column-gap: 26px; }
+  .mp-bigplay { grid-row: 1; width: 80px; height: 80px; border-radius: 50%; border: 1px solid var(--mp-ctl); color: var(--mp-ctl); display: grid; place-items: center; }
+  .mp-bigplay svg { width: 40px; height: 40px; }
+  .mp--wide.mp--nocover .mp-info { padding-top: 0; }
+  .mp--wide.mp--nocover .mp-l1, .mp--wide.mp--nocover .mp-l2, .mp--wide.mp--nocover .mp-l3 { font-size: var(--mp-fs2); line-height: 30px; margin: 0; }
+  .mp--wide.mp--nocover .mp-controls { grid-column: 1 / -1; grid-row: 2; flex-wrap: nowrap; margin: 40px 0 14px; padding: 0; gap: 16px; }
+  .mp--wide.mp--nocover .mp-controls .mp-progress { order: 0; flex-basis: auto; }
+  .mp--wide.mp--nocover .mp-controls .mp-time { margin-right: 0; font-size: var(--mp-fs3); }
+  .mp--wide.mp--nocover .mp-prev svg, .mp--wide.mp--nocover .mp-next svg { width: 22px; height: 22px; }
+  .mp--wide.mp--nocover .mp-list { margin-top: 0; }
+  .mp--wide.mp--nocover .mp-row { height: 45px; }
+  .mp--wide.mp--nocover .mp-row-btn { font-size: var(--mp-fs4); }
+  .mp--wide.mp--nocover .mp-num, .mp--wide.mp--nocover .mp-row-dur { font-size: var(--mp-fs4); }
+
+  /* ---- compact (single bar) ---- */
+  .mp--compact { grid-template-columns: 80px minmax(0, 1fr) auto; grid-template-rows: auto auto; align-content: start; column-gap: 30px; padding: 30px 30px 0; height: auto; min-height: var(--mp-h); overflow: visible; }
+  .mp--compact .mp-cover { grid-row: 1 / span 2; width: 80px; height: 80px; }
+  .mp-cover-play { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; background: rgba(0,0,0,.15); }
+  .mp-cover-play svg { width: 26px; height: 26px; }
+  .mp--compact .mp-info { align-self: center; }
+  .mp--compact .mp-l1 { font-size: var(--mp-fs1); line-height: 1.4; }
+  .mp--compact .mp-l2 { font-size: var(--mp-fs2); line-height: 1.4; opacity: .55; }
+  .mp--compact .mp-share-icon { grid-column: 3; grid-row: 1; align-self: center; border: 0; width: auto; height: auto; }
+  .mp--compact .mp-controls { grid-column: 2 / span 2; grid-row: 2; gap: 14px; }
+  .mp--compact .mp-controls .mp-progress { height: 12px; }
+  .mp--compact .mp-progress::before { height: 1px; margin-top: -.5px; background: color-mix(in srgb, var(--mp-text) 60%, transparent); }
+  .mp--compact .mp-fill { height: 3px; margin-top: -1.5px; background: var(--mp-text); }
+  .mp--compact .mp-knob, .mp--compact .mp-buffer { display: none; }
+  .mp--compact .mp-listtoggle { position: absolute; right: 30px; top: 56px; color: var(--mp-text); }
+  .mp--compact .mp-share-icon { position: absolute; right: 70px; top: 56px; color: var(--mp-text); }
+  .mp--compact .mp-list { grid-column: 1 / -1; margin: 18px 0 0; }
+  .mp--compact .mp-row { height: 44px; }
+  .mp--compact .mp-row-btn { font-size: 15px; }
+
+  @media (max-width: 760px) {
+    .mp { max-width: 100%; }
+    .mp--card { height: auto; max-height: 760px; }
+    .mp--card .mp-row { height: 50px; }
+    .mp--card .mp-row-btn { font-size: 16px; }
+    .mp--wide { grid-template-columns: 110px minmax(0, 1fr) auto; column-gap: 14px; height: auto; padding-bottom: 6px; }
+    .mp--wide .mp-cover { width: 110px; height: 110px; }
+    .mp--wide .mp-controls { grid-column: 1 / -1; grid-row: 3; margin-top: 14px; }
+    .mp--wide .mp-list { grid-row: 4; }
+    .mp--wide .mp-l2 { font-size: calc(var(--mp-fs1) * .8); }
+    .mp--wide:not(.mp--nocover) { grid-template-columns: 90px minmax(0, 1fr) auto; }
+    .mp--wide .mp-cover { width: 90px !important; height: 90px !important; }
+    .mp--wide:not(.mp--nocover) .mp-info p { white-space: normal; font-size: 13px; line-height: 1.35; }
+    .mp--wide .mp-share-icon { width: 34px; height: 34px; }
+    .mp--wide.mp--nocover { grid-template-columns: 64px minmax(0, 1fr); padding: 20px 14px 6px; column-gap: 14px; }
+    .mp-bigplay { width: 64px; height: 64px; }
+    .mp--wide.mp--nocover .mp-l1, .mp--wide.mp--nocover .mp-l2, .mp--wide.mp--nocover .mp-l3 { font-size: 13px; line-height: 22px; }
+    .mp--wide.mp--nocover .mp-controls { grid-row: 2; margin: 22px 0 10px; gap: 10px; }
+    .mp--wide.mp--nocover .mp-list { grid-row: 3; }
+    .mp--wide.mp--nocover .mp-controls .mp-time { font-size: 11px; }
+    .mp--list { height: auto; padding-bottom: 6px; }
+    .mp--list .mp-l2 { font-size: 16px; }
+    .mp--list .mp-time { font-size: 11px; }
+    .mp--compact { grid-template-columns: 64px minmax(0, 1fr); column-gap: 14px; padding: 18px 14px 12px; }
+    .mp--compact .mp-cover { width: 64px; height: 64px; }
+    .mp--compact .mp-l1, .mp--compact .mp-l2 { font-size: 17px; padding-right: 64px; }
+    .mp--compact .mp-listtoggle { right: 14px; top: 24px; }
+    .mp--compact .mp-share-icon { right: 46px; top: 24px; }
+    .mp--compact .mp-controls { margin-top: 8px; }
+  }
+</style>
+
+<script>
+  type Track = { title: string; artist: string; duration: string; src: string };
+  const players: HTMLElement[] = [];
+  const fmt = (s: number) => {
+    if (!isFinite(s) || s < 0) s = 0;
+    const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+    return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  };
+
+  function initPlayer(root: HTMLElement) {
+    const data = JSON.parse(root.querySelector('script[type="application/json"]')!.textContent!) as { album: string; tracks: Track[] };
+    const audio = root.querySelector('audio')!;
+    const $ = <T extends Element = HTMLElement>(s: string) => root.querySelector<T & Element>(s) as unknown as T;
+    const $$ = (s: string) => Array.from(root.querySelectorAll<HTMLElement>(s));
+    const rows = $$('.mp-row');
+    const progress = $<HTMLElement>('[data-progress]');
+    const fill = $<HTMLElement>('[data-fill]');
+    const knob = $<HTMLElement>('[data-knob]');
+    const buffer = $<HTMLElement>('[data-buffer]');
+    const cur = $<HTMLElement>('[data-cur]');
+    const dur = $<HTMLElement>('[data-dur]');
+    const listArtist = root.hasAttribute('data-list-artist');
+    let idx = 0;
+    let seeking = false;
+
+    function load(i: number) {
+      idx = (i + data.tracks.length) % data.tracks.length;
+      const t = data.tracks[idx];
+      audio.src = t.src;
+      $$('[data-title]').forEach((el) => (el.textContent = t.title));
+      $$('[data-artist]').forEach((el) => (el.textContent = t.artist));
+      if (dur) dur.textContent = t.duration;
+      if (cur) cur.textContent = '00:00';
+      setProgress(0);
+      rows.forEach((r, n) => r.classList.toggle('is-current', n === idx));
+      root.setAttribute('aria-label', `Musik-Player: ${t.title}${listArtist ? ' / ' + t.artist : ''}`);
+    }
+    function setProgress(p: number) {
+      const pct = Math.max(0, Math.min(100, p * 100));
+      if (fill) fill.style.width = pct + '%';
+      if (knob) knob.style.left = pct + '%';
+      progress?.setAttribute('aria-valuenow', String(Math.round(pct)));
+    }
+    async function play() {
+      if (!audio.src) load(idx);
+      players.forEach((p) => p !== root && p.dispatchEvent(new CustomEvent('mp:pause')));
+      try { await audio.play(); } catch { /* autoplay blocked – wait for user */ }
+    }
+    const toggle = () => (audio.paused ? play() : audio.pause());
+
+    root.addEventListener('mp:pause', () => audio.pause());
+    $$('[data-play]').forEach((b) => b.addEventListener('click', toggle));
+    $('[data-prev]')?.addEventListener('click', () => { const was = !audio.paused; if (audio.currentTime > 3) { audio.currentTime = 0; return; } load(idx - 1); if (was) play(); });
+    $('[data-next]')?.addEventListener('click', () => { const was = !audio.paused; load(idx + 1); if (was) play(); });
+    $$('[data-track]').forEach((b) => b.addEventListener('click', () => {
+      const i = Number(b.dataset.track);
+      if (i === idx && audio.src) { toggle(); return; }
+      load(i); play();
+    }));
+    $('[data-mute]')?.addEventListener('click', () => { audio.muted = !audio.muted; root.classList.toggle('is-muted', audio.muted); });
+    const listToggle = $<HTMLButtonElement>('[data-list-toggle]');
+    const list = $<HTMLElement>('[data-list]');
+    listToggle?.addEventListener('click', () => {
+      if (root.dataset.variant === 'compact') { list.hidden = !list.hidden; listToggle.setAttribute('aria-expanded', String(!list.hidden)); return; }
+      const hidden = root.classList.toggle('list-hidden');
+      listToggle.setAttribute('aria-expanded', String(!hidden));
+    });
+
+    audio.addEventListener('play', () => root.classList.add('is-playing'));
+    audio.addEventListener('pause', () => root.classList.remove('is-playing'));
+    audio.addEventListener('ended', () => { load(idx + 1); if (idx !== 0) play(); });
+    audio.addEventListener('timeupdate', () => {
+      if (seeking) return;
+      if (cur) cur.textContent = fmt(audio.currentTime);
+      setProgress(audio.duration ? audio.currentTime / audio.duration : 0);
+    });
+    audio.addEventListener('loadedmetadata', () => { if (dur && isFinite(audio.duration)) dur.textContent = fmt(audio.duration); });
+    audio.addEventListener('progress', () => {
+      if (buffer && audio.duration && audio.buffered.length) buffer.style.width = (audio.buffered.end(audio.buffered.length - 1) / audio.duration) * 100 + '%';
+    });
+
+    // seeking (mouse, touch, keyboard)
+    const seekTo = (clientX: number) => {
+      const r = progress.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
+      setProgress(p);
+      if (audio.duration) { audio.currentTime = p * audio.duration; if (cur) cur.textContent = fmt(audio.currentTime); }
+      return p;
+    };
+    progress?.addEventListener('pointerdown', (e) => {
+      if (!audio.src) load(idx);
+      seeking = true; progress.setPointerCapture(e.pointerId);
+      const apply = () => seekTo(e.clientX);
+      if (audio.readyState < 1) { audio.addEventListener('loadedmetadata', apply, { once: true }); audio.load(); }
+      apply();
+    });
+    progress?.addEventListener('pointermove', (e) => { if (seeking) seekTo(e.clientX); });
+    progress?.addEventListener('pointerup', () => { seeking = false; });
+    progress?.addEventListener('keydown', (e) => {
+      if (!audio.duration) return;
+      if (e.key === 'ArrowRight') audio.currentTime = Math.min(audio.duration, audio.currentTime + 5);
+      else if (e.key === 'ArrowLeft') audio.currentTime = Math.max(0, audio.currentTime - 5);
+      else return;
+      e.preventDefault();
+    });
+
+    // share popover
+    const pop = $<HTMLElement>('[data-sharepop]');
+    const url = root.dataset.shareUrl!;
+    const enc = encodeURIComponent(url);
+    const text = encodeURIComponent(`The Vintage Cinema Club – ${data.album}`);
+    const nets: Record<string, string> = {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${enc}`,
+      twitter: `https://twitter.com/intent/tweet?url=${enc}&text=${text}`,
+      pinterest: `https://pinterest.com/pin/create/button/?url=${enc}&description=${text}`,
+      tumblr: `https://www.tumblr.com/share/link?url=${enc}`,
+    };
+    pop.querySelectorAll<HTMLAnchorElement>('a[data-net]').forEach((a) => (a.href = nets[a.dataset.net!]));
+    pop.querySelector('[data-net="copy"]')?.addEventListener('click', async (e) => {
+      const b = e.currentTarget as HTMLButtonElement;
+      try { await navigator.clipboard.writeText(url); b.textContent = 'Link kopiert ✓'; } catch { b.textContent = url; }
+      setTimeout(() => { b.textContent = 'Link kopieren'; pop.hidden = true; }, 1400);
+    });
+    $$('[data-share]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); pop.hidden = !pop.hidden; }));
+    document.addEventListener('click', (e) => { if (!pop.hidden && !pop.contains(e.target as Node)) pop.hidden = true; });
+
+    load(0);
+    audio.preload = 'metadata';
+    if (root.hasAttribute('data-autoplay')) {
+      // Original widget autoplays; browsers only allow it after interaction.
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((en) => en.isIntersecting)) { io.disconnect(); if (!players.some((p) => p.classList.contains('is-playing'))) play(); }
+      });
+      io.observe(root);
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-player]').forEach((el) => { players.push(el); initPlayer(el); });
+</script>

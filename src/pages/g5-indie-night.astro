@@ -1,0 +1,133 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+import MusicPlayer from '../components/MusicPlayer.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import Band from '../components/Band.astro';
+import SocialIcon from '../components/SocialIcon.astro';
+import { SITE_URL } from '../lib/site';
+
+const maps = 'https://maps.app.goo.gl/4HbCXkAwU61xtJJG9';
+const tickets = 'https://ntry.at/g5indienight';
+// ntry.at ticket-shop widget (originally a Wix "HTML embed")
+const ntry = '<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}</style></head><body><script src="https://ntry.at/iframe/g5indienight.js?l=de"></script></body></html>';
+---
+<Base title="G5 Indie Night" path="/g5-indie-night" bg="black" ogImage="149dd1_6308e8fa0e42451c9c3159c1ccdd0c0c.png">
+  <div id="top"></div>
+  <div class="col page">
+    <Img src="149dd1_6308e8fa0e42451c9c3159c1ccdd0c0c.png" alt="G5 Indie Night" w={762} h={417} class="logo" loading="eager" />
+    <h2 class="claim">for those who still believe in bands</h2>
+
+    <p class="addr">
+      <a href={maps} target="_blank" rel="noreferrer noopener"><strong>G5 Live Music Bar</strong><br />Heiligenstädter Straße 31<br />1190 Wien<br />Doors 20:00<br />Beginn 20:30</a>
+    </p>
+
+    <div class="row">
+      <div class="tix">
+        <h2><a href={tickets} target="_blank" rel="noreferrer noopener"><span class="lbl">Tickets:  </span>VVK: Early Bird 8€ / <span class="s15">10€</span></a></h2>
+        <h2 class="evening"><a href={tickets} target="_blank" rel="noreferrer noopener">Abend: 12€</a></h2>
+      </div>
+      <a class="ntry" href={tickets} target="_blank" rel="noreferrer noopener" aria-label="Tickets auf ntry.at">
+        <Img src="149dd1_0e171193020f455e814d3e9292012f06.png" alt="ntry.png" w={46} h={46} />
+      </a>
+      <div class="share"><ShareButtons path="/g5-indie-night" labelColor="var(--wine)" /></div>
+    </div>
+
+    <div class="player">
+      <MusicPlayer
+        album="g5" variant="list" width={595} height={282} autoplay listArtist
+        theme={{ bg: 'rgba(203,184,148,.23)', text: 'rgb(203,184,148)', control: '#fff', divider: '#000', active: 'rgb(191,191,191)', font: 'var(--f-wide)', sizes: [20, 20, 15, 12] }}
+        shareUrl={`${SITE_URL}/g5-indie-night`}
+      />
+    </div>
+
+    <div class="bands">
+      <p class="bands-h">Die Bands:</p>
+
+      <article class="marbelite">
+        <p class="name">Marbelite</p>
+        <Img src="149dd1_adc613cc3c8e406b967618b6a81fb2f2.jpg" alt="Marbelite Logo" w={200} h={200} class="m-logo" />
+        <Img src="149dd1_f4b428cceeab44f29f837a35a2309b93.jpg" alt="Marbelite" w={214} h={322} class="m-photo" />
+        <p class="desc">ist eine Wiener Indie-Band, die mit mitreißenden Lyrics und einem Mix verschiedenster Musikeinflüsse einen einzigartigen Sound schafft. Amanda, Celine, Christian, Karo und Sascha sorgen mit viel Energie und echten, rohen Emotionen für eine gute Stimmung.</p>
+        <a class="ig" href="https://www.instagram.com/marbelite_music" target="_blank" rel="noreferrer noopener" aria-label="Marbelite auf Instagram">
+          <SocialIcon name="instagram" variant="grey" size={39} />
+        </a>
+      </article>
+
+      <Band name="Roses and Tulips" images={[{ src: '149dd1_09ff20286b5547c29c7aea67b1a46113.png', w: 156, h: 200, alt: 'RuT_Logo_invert.png' }, { src: '149dd1_ad05e363a8a24a368ab7d94311286508.jpg', w: 350, h: 200, alt: 'Roses and Tulips' }]} instagram="https://www.instagram.com/roses8tulips" class="b-rut">
+        <p>ist ein Psychedelic Indie Rock Trio. Mit Einflüssen aus Dream-Pop und Shoegaze verbindet die Musik von Valentin Neulinger, Lorenz Seifert und Niki Mondl atmosphärische Instrumentals mit bildhaften Texten.</p>
+      </Band>
+
+      <Band name="The Vintage Cinema Club" images={[{ src: '149dd1_d1fe0033cc404b9a890f9ebddd5c65b7.png', w: 306, h: 194, alt: 'The Vintage Cinema Club Logo' }, { src: '149dd1_a7a28d06c9e042b599f219e0f14bb082.jpg', w: 289, h: 194, alt: 'The Vintage Cinema Club' }]} instagram="http://instagram.com/the_vintage_cinema_club" class="b-tvcc">
+        <p>ist eine Indie-Rock-Band aus Salzburg/Wien. Zwischen Britpop, Alternative Rock und elektronischen Einflüssen entstehen bei Christian Sieglhuber, Johannes Pann, Lukas Brunner, Steffen Bodis und Sarah May Karger Songs mit Retro-Charme und modernen Klangfarben.</p>
+      </Band>
+    </div>
+
+    <iframe class="ntry-widget" title="Tickets – G5 Indie Night (ntry.at)" srcdoc={ntry} loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"></iframe>
+  </div>
+</Base>
+
+<style>
+  .page { position: relative; padding-top: 71px; min-height: 3365px; color: var(--sand-2); font-family: var(--f-sans); }
+  .page :global(.logo) { width: 762px; height: 417px; margin-left: 109px; }
+  .claim { width: 600px; margin: 62px 0 0 187px; font: 400 37px/45px var(--f-sans); letter-spacing: 7.4px; text-align: center; }
+  .addr { width: 310px; margin: 12px 0 0 332px; font-size: 15px; line-height: 19.5px; text-align: center; color: #fff; }
+  .addr a { text-decoration: none; }
+  .addr strong { font-weight: 700; }
+  .row { position: relative; height: 46px; margin-top: 30px; }
+  .tix { position: absolute; left: 187px; top: 2px; font-size: 16px; letter-spacing: .01em; color: #fff; }
+  .tix h2 { font-size: 16px; line-height: normal; }
+  .tix a { text-decoration: none; }
+  .tix .lbl { color: var(--wine); }
+  .tix .s15, .tix .evening { font-size: 15px; }
+  .evening { margin: 6px 0 0 72px; }
+  .ntry { position: absolute; left: 460px; top: 0; }
+  .ntry img { width: 46px; height: 46px; }
+  .share { position: absolute; left: 567px; top: 0; }
+  .player { width: 595px; margin: 41px 0 0 186px; }
+
+  .bands { width: 600px; margin: 46px 0 0 180px; }
+  .bands-h { font: 700 25px/32.5px var(--f-sans); letter-spacing: .01em; margin-left: 12px; }
+  .marbelite { position: relative; height: 528px; margin-left: 9px; }
+  .marbelite .name { position: absolute; top: 33px; font: 700 22px/32.5px var(--f-sans); }
+  .marbelite :global(.m-logo) { position: absolute; left: -3px; top: 82px; width: 200px; height: 200px; }
+  .marbelite :global(.m-photo) { position: absolute; left: 377px; top: -20px; width: 214px; height: 322px; }
+  .marbelite .desc { position: absolute; top: 312px; width: 595px; font-size: 19px; line-height: 26px; letter-spacing: .01em; }
+  .marbelite .ig { position: absolute; top: 452px; left: -3px; }
+  .ig svg { display: block; }
+  .bands :global(.band-name) { font-size: 22px; line-height: 32.5px; color: var(--sand-2); }
+  .bands :global(.band-text) { font-size: 19px; line-height: 24.7px; letter-spacing: .01em; color: var(--sand-2); width: 595px; }
+  .bands :global(.b-rut) { margin-top: 0; }
+  .bands :global(.b-rut .band-imgs) { margin-top: 13px; gap: 89px; }
+  .bands :global(.b-rut .band-text) { margin-top: 10px; }
+  .bands :global(.b-rut .band-ig) { margin-top: 16px; }
+  .bands :global(.b-tvcc) { margin-top: 50px; }
+  .bands :global(.b-tvcc .band-imgs) { margin-top: 22px; }
+  .bands :global(.b-tvcc .band-text) { margin-top: 28px; font-size: 19px; line-height: 22.8px; letter-spacing: normal; }
+  .bands :global(.b-tvcc .band-ig) { margin-top: 14px; }
+  .ntry-widget { width: 319px; height: 580px; border: 0; margin: 14px 0 0 324px; background: transparent; }
+
+  @media (max-width: 1000px) {
+    .page { min-height: 0; padding: 30px var(--gutter) 80px; }
+    .page :global(.logo) { width: 100%; height: auto; margin: 0; }
+    .claim, .addr { width: auto; margin-left: 0; }
+    .row { height: auto; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 18px 24px; }
+    .tix, .ntry, .share { position: static; }
+    .player { width: 100%; max-width: 595px; margin: 30px auto 0; }
+    .bands { width: 100%; max-width: 600px; margin: 40px auto 0; }
+    .marbelite { height: auto; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+    .marbelite > * { position: static !important; }
+    .marbelite .name, .marbelite .desc, .marbelite .ig { grid-column: 1 / -1; }
+    .marbelite :global(.m-logo), .marbelite :global(.m-photo) { position: static !important; width: 100% !important; height: auto !important; }
+    .marbelite .desc { width: auto; }
+    .bands :global(.band-text) { width: auto; }
+    .bands :global(.b-rut) { margin-top: 30px; }
+    .bands :global(.b-rut .band-imgs) { gap: 12px; }
+    .ntry-widget { display: block; margin: 30px auto 0; }
+  }
+  @media (max-width: 760px) {
+    .claim { font-size: 20px; line-height: 28px; letter-spacing: 3px; margin-top: 24px; }
+    .bands-h { font-size: 20px; margin-left: 0; }
+    .marbelite .desc, .bands :global(.band-text) { font-size: 15px !important; line-height: 21px !important; }
+  }
+</style>

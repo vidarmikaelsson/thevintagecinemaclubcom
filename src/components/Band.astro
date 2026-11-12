@@ -1,0 +1,35 @@
+---
+// One band block on the event pages: name, image(s), description, Instagram link.
+import Img from './Img.astro';
+import SocialIcon from './SocialIcon.astro';
+
+interface Props {
+  name: string;
+  images: { src: string; alt?: string; w: number; h: number }[];
+  instagram: string;
+  class?: string;
+}
+const { name, images, instagram, class: cls } = Astro.props;
+---
+<article class:list={['band', cls]}>
+  <p class="band-name">{name}</p>
+  <div class="band-imgs">
+    {images.map((im) => <Img src={im.src} alt={im.alt ?? ''} w={im.w} h={im.h} style={`width:${im.w}px;height:${im.h}px`} />)}
+  </div>
+  <div class="band-text"><slot /></div>
+  <a class="band-ig" href={instagram} target="_blank" rel="noreferrer noopener" aria-label={`${name.trim()} auf Instagram`}>
+    <SocialIcon name="instagram" variant="grey" size={39} />
+  </a>
+</article>
+
+<style>
+  .band-name { font: 700 22px/27.5px var(--f-sans); }
+  .band-imgs { display: flex; align-items: flex-start; }
+  .band-ig { display: inline-block; }
+  .band-ig svg { display: block; }
+  @media (max-width: 760px) {
+    .band-imgs { flex-wrap: nowrap; }
+    .band-imgs :global(img) { width: auto !important; height: auto !important; min-width: 0; flex: 1 1 0; max-width: 100%; }
+    .band-name { font-size: 18px; }
+  }
+</style>

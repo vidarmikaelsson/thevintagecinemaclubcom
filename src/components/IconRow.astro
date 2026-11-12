@@ -1,0 +1,20 @@
+---
+import SocialIcon from './SocialIcon.astro';
+
+interface Props {
+  items: { href: string; icon: 'spotify' | 'applemusic' | 'youtube' | 'facebook' | 'instagram'; label: string }[];
+  variant?: 'color' | 'white';
+  class?: string;
+  label?: string;
+}
+const { items, variant = 'color', class: cls, label = 'Social Media & Streaming' } = Astro.props;
+---
+<ul class:list={['icon-row', cls]} aria-label={label}>
+  {items.map((i) => (
+    <li>
+      <a href={i.href} target="_blank" rel="noopener" aria-label={i.label} title={i.label}>
+        <SocialIcon name={i.icon} variant={variant} />
+      </a>
+    </li>
+  ))}
+</ul>

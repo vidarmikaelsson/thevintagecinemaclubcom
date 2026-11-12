@@ -1,0 +1,108 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+import MusicPlayer from '../components/MusicPlayer.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import Band from '../components/Band.astro';
+import { SITE_URL } from '../lib/site';
+
+const tvccImgs = [
+  { src: '149dd1_d1fe0033cc404b9a890f9ebddd5c65b7.png', w: 306, h: 194, alt: 'The Vintage Cinema Club Logo' },
+  { src: '149dd1_a7a28d06c9e042b599f219e0f14bb082.jpg', w: 289, h: 194, alt: 'The Vintage Cinema Club' },
+];
+---
+<Base title="Saturday Overdrive at Cafe Carina" path="/saturdayoverdrive" bg="black" ogImage="149dd1_ae985f15ab684ba0a2f0aba9b3b4d6c6.png">
+  <div id="top"></div>
+  <div class="col page">
+    <Img src="149dd1_ae985f15ab684ba0a2f0aba9b3b4d6c6.png" alt="SatOver_atCarina.png" w={769} h={463} class="poster" loading="eager" />
+    <h2 class="claim">for those who still believe in loud guitars</h2>
+    <p class="date">24.10.2026</p>
+
+    <div class="info">
+      <div class="venue">
+        <p><a href="https://www.cafe-carina.at/" target="_blank" rel="noreferrer noopener"><strong>Café Carina</strong></a></p>
+        <p>Josefstädter Straße 84</p>
+        <p>1080 Wien</p>
+        <p>U-Bahnbogen 42</p>
+      </div>
+      <div class="sched">
+        <p class="begin">Beginn 20:30</p>
+        <p>21:00:     THE VINTAGE CINEMA CLUB</p>
+        <p>22:00:    CANDID</p>
+        <p>23:00:    ANJOANA K.</p>
+      </div>
+    </div>
+
+    <div class="share-row"><ShareButtons path="/saturdayoverdrive" /></div>
+
+    <div class="player">
+      <MusicPlayer
+        album="saturday" variant="wide" width={680} height={345} autoplay listArtist
+        theme={{ bg: 'rgba(203,184,148,.23)', text: 'rgb(217,191,168)', control: '#fff', divider: '#000', active: 'rgb(191,191,191)', font: 'var(--f-wide)', sizes: [15, 16, 15, 12] }}
+        shareUrl={`${SITE_URL}/saturdayoverdrive`}
+      />
+    </div>
+
+    <div class="bands">
+      <Band name="The Vintage Cinema Club" images={tvccImgs} instagram="http://instagram.com/the_vintage_cinema_club" class="b1">
+        <p>ist eine Indie-Rock-Band aus Salzburg/Wien. Zwischen Britpop, Alternative Rock und elektronischen Einflüssen entstehen bei Christian Sieglhuber, Johannes Pann, Lukas Brunner, Steffen Bodis und Sarah May Karger Songs mit Retro-Charme und modernen Klangfarben.</p>
+      </Band>
+      <Band name="Candid" images={[{ src: '149dd1_f525db9b183e40cf9f089a898c6b9a01.jpg', w: 595, h: 204, alt: 'Bandpic-CANDID.jpg' }]} instagram="https://www.instagram.com/candidrock1" class="b2">
+        <p>ist ein Rock-Trio aus Wien, das in seiner aktuellen Besetzung seit 2019 mit einer einzigartigen Mischung aus Punk, Pop, Reggae und Rock begeistert. Die Band besteht aus Tim (Lead-Vocals &amp; Gitarre), Noélie (Schlagzeug &amp; Backing-Vocals) und Franz (Bass). Mit energiegeladenen Live-Auftritten und vielseitigen Songs, die von kraftvollen Riffs bis hin zu gefühlvollen Balladen reichen, haben sie sich in die Herzen ihrer Fans gespielt.</p>
+      </Band>
+      <Band name="Anjoana K. " images={[{ src: '149dd1_39f559c064fe4b64b25d518ac223acb8.jpg', w: 595, h: 194, alt: 'Bandpic-AnjoanaK.jpg' }]} instagram="https://www.instagram.com/anjoana.k" class="b3">
+        <p>In ihren kraftvollen Songs bricht die Wiener Künstlerin das Schweigen über mentale Gesundheit mit der ungeschliffenen Energie des Punk-Rock. In einer Welt aus Schweigen und Erwartungen feiert sie die Selbstliebe und gibt dem „Inneren Kind“ eine laute, verzerrte Stimme. Es ist Musik für alle, die Heilung nicht immer als stillen Prozess, sondern als Rebellion gegen das eigene Verstecken verstehen.</p>
+      </Band>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page { position: relative; color: var(--sand); padding: 60px 0 0; min-height: 3382px; }
+  .page :global(.poster) { width: 769px; height: 463px; margin: 0 auto; }
+  .claim { width: 600px; margin: 37px auto 0; font: 400 37px/normal var(--f-brush); letter-spacing: 7.4px; text-align: center; }
+  .date { margin: 32px auto 0; width: 534px; font: 400 56px/80px var(--f-wide); text-align: center; padding-left: 13px; }
+  .info { display: flex; margin-top: 40px; font-family: var(--f-wide); }
+  .venue { width: 310px; margin-left: 190px; text-align: center; font-size: 18px; line-height: 28px; }
+  .venue a { text-decoration: none; }
+  .venue strong { font-weight: 700; }
+  .sched { margin-left: 42px; font-size: 14px; line-height: 22px; white-space: pre; }
+  .sched .begin { line-height: 31px; }
+  .sched .begin { font-size: 18px; }
+  .share-row { margin: 9px 0 0 365px; }
+  .player { width: 680px; height: 404px; margin: 22px 0 0 190px; }
+  .bands { margin-left: 207px; width: 620px; }
+  .bands :global(.band-text) { font: 400 19px/22.8px var(--f-condensed); color: var(--sand-2); margin-top: 22px; width: 620px; }
+  .bands :global(.band-name) { color: var(--sand-2); }
+  .bands :global(.band-ig) { margin-top: 13px; }
+  .bands :global(.b1) { margin-top: 101px; }
+  .bands :global(.b1 .band-imgs) { margin-top: 22px; }
+  .bands :global(.b2) { margin-top: 50px; }
+  .bands :global(.b2 .band-imgs) { margin-top: 0; }
+  .bands :global(.b3) { margin-top: 51px; }
+  .bands :global(.b3 .band-imgs) { margin-top: 9px; }
+  .bands :global(.b3 .band-text) { margin-top: 45px; }
+
+  @media (max-width: 1000px) {
+    .page { min-height: 0; padding: 30px var(--gutter) 80px; }
+    .page :global(.poster) { width: 100%; height: auto; }
+    .claim { width: auto; }
+    .date { width: auto; padding: 0; }
+    .info { flex-direction: column; align-items: center; gap: 24px; }
+    .venue { margin: 0; }
+    .sched { margin: 0; }
+    .share-row { margin: 24px 0 0; display: flex; justify-content: center; }
+    .player { width: 100%; max-width: 680px; height: auto; margin: 22px auto 0; }
+    .bands { margin: 0 auto; width: 100%; max-width: 620px; }
+    .bands :global(.band-text) { width: auto; }
+  }
+  @media (max-width: 760px) {
+    .claim { font-size: 18px; letter-spacing: 3.6px; margin-top: 18px; }
+    .date { font-size: 30px; line-height: 44px; margin-top: 10px; }
+    .venue { font-size: 15px; }
+    .sched { font-size: 11px; }
+    .sched .begin { font-size: 13px; }
+    .bands :global(.b1) { margin-top: 50px; }
+    .bands :global(.band-text) { font-size: 17px; line-height: 20px; margin-top: 18px !important; }
+  }
+</style>

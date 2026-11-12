@@ -1,0 +1,150 @@
+---
+/**
+ * Replacement for the Wix Pro Gallery "slider" layout used for "Live & Loud":
+ * fixed-height horizontal slider, 6px spacing, auto slideshow (4s, loop),
+ * arrows, swipe, and click-to-expand fullscreen viewer.
+ */
+import { getImage } from 'astro:assets';
+import Img from './Img.astro';
+import { media } from '../lib/media';
+
+interface Props { images: { src: string; alt?: string }[]; interval?: number }
+const { images, interval = 4000 } = Astro.props;
+const H = 853; // desktop item height on the original
+const items = await Promise.all(images.map(async (im) => {
+  const m = media(im.src);
+  const full = await getImage({ src: m, width: Math.min(m.width, m.width >= m.height ? 1920 : 1280), format: 'webp', quality: 82 });
+  return { ...im, w: Math.round((H * m.width) / m.height), ratio: m.width / m.height, full: full.src };
+}));
+---
+<div class="lg" data-lg data-interval={interval} role="region" aria-roledescription="Karussell" aria-label="Live & Loud Galerie">
+  <div class="lg-viewport">
+    <ul class="lg-track" data-lg-track>
+      {items.map((it, i) => (
+        <li class="lg-item" style={`--r:${it.ratio}`}>
+          <button type="button" class="lg-open" data-lg-open={i} data-full={it.full} aria-label={`Bild ${i + 1} von ${items.length} vergrößern`}>
+            <Img src={it.src} alt={it.alt ?? ''} w={it.w} h={H} sizes={`(max-width: 760px) ${Math.round(59 * it.ratio)}vw, ${it.w}px`} loading={i < 3 ? 'eager' : 'lazy'} />
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <button class="lg-arrow lg-prev" type="button" data-lg-prev aria-label="Vorheriges Bild">
+    <svg viewBox="0 0 23 39" aria-hidden="true"><path d="M21 2L3 19.5 21 37" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+  </button>
+  <button class="lg-arrow lg-next" type="button" data-lg-next aria-label="Nächstes Bild">
+    <svg viewBox="0 0 23 39" aria-hidden="true"><path d="M2 2l18 17.5L2 37" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+  </button>
+
+  <dialog class="lb" data-lb aria-label="Vollbild-Galerie">
+    <button class="lb-close" type="button" data-lb-close aria-label="Schließen">
+      <svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+    <button class="lb-arrow lb-prev" type="button" data-lb-prev aria-label="Vorheriges Bild"><svg viewBox="0 0 23 39"><path d="M21 2L3 19.5 21 37" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <figure class="lb-fig"><img data-lb-img alt="" /></figure>
+    <button class="lb-arrow lb-next" type="button" data-lb-next aria-label="Nächstes Bild"><svg viewBox="0 0 23 39"><path d="M2 2l18 17.5L2 37" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <p class="lb-count" data-lb-count></p>
+  </dialog>
+</div>
+
+<style>
+  .lg { --h: 853px; position: relative; width: 100%; height: var(--h); overflow: hidden; }
+  .lg-viewport { position: absolute; inset: 0; }
+  .lg-track { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; height: 100%; transform: translate3d(var(--x, 0px), 0, 0); transition: transform .8s cubic-bezier(.45, 0, .2, 1); will-change: transform; touch-action: pan-y; }
+  .lg-track.no-anim { transition: none; }
+  .lg-item { flex: none; height: 100%; width: calc(var(--h) * var(--r)); }
+  .lg-open { display: block; width: 100%; height: 100%; padding: 0; cursor: zoom-in; }
+  .lg-open img { width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-drag: none; }
+  .lg-arrow { position: absolute; top: 50%; z-index: 2; width: 23px; height: 39px; margin-top: -19.5px; color: #fff; opacity: .9; filter: drop-shadow(0 0 3px rgba(0,0,0,.6)); }
+  .lg-arrow:hover { opacity: 1; }
+  .lg-arrow svg { width: 100%; height: 100%; }
+  .lg-prev { left: 30px; }
+  .lg-next { right: 30px; }
+
+  .lb { position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #fff; color: #000; }
+  .lb::backdrop { background: #fff; }
+  .lb[open] { display: grid; grid-template-columns: 80px 1fr 80px; align-items: center; }
+  .lb-fig { margin: 0; height: 100dvh; display: grid; place-items: center; padding: 40px 0; }
+  .lb-fig img { max-width: 100%; max-height: calc(100dvh - 80px); object-fit: contain; }
+  .lb-arrow { justify-self: center; width: 23px; height: 39px; color: #000; }
+  .lb-arrow svg { width: 100%; height: 100%; }
+  .lb-close { position: absolute; top: 20px; right: 20px; width: 28px; height: 28px; z-index: 2; }
+  .lb-close svg { width: 100%; height: 100%; }
+  .lb-count { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; font: 13px var(--f-sans); color: #666; }
+
+  @media (max-width: 760px) {
+    .lg { --h: 59vw; }
+    .lg-prev { left: 12px; } .lg-next { right: 12px; }
+    .lg-arrow { width: 16px; height: 27px; margin-top: -13px; }
+    .lb[open] { grid-template-columns: 44px 1fr 44px; }
+    .lb-arrow { width: 16px; height: 27px; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-lg]').forEach((lg) => {
+    const track = lg.querySelector<HTMLElement>('[data-lg-track]')!;
+    const items = Array.from(track.children) as HTMLElement[];
+    const interval = Number(lg.dataset.interval) || 4000;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let idx = 0;
+    let timer = 0;
+
+    // On wide screens the original slider is 2069px wide and centred, so the
+    // current image starts left of the viewport edge (-316px at 1440px).
+    const base = () => (window.innerWidth > 1024 ? Math.min(0, (lg.clientWidth - 2069) / 2) : 0);
+    const go = (i: number, anim = true) => {
+      idx = (i + items.length) % items.length;
+      track.classList.toggle('no-anim', !anim);
+      track.style.setProperty('--x', `${base() - items[idx].offsetLeft}px`);
+    };
+    const next = () => go(idx + 1);
+    const prev = () => go(idx - 1);
+    const stop = () => window.clearInterval(timer);
+    const startAuto = () => { stop(); if (!reduce) timer = window.setInterval(next, interval); };
+
+    lg.querySelector('[data-lg-next]')!.addEventListener('click', () => { next(); startAuto(); });
+    lg.querySelector('[data-lg-prev]')!.addEventListener('click', () => { prev(); startAuto(); });
+    lg.addEventListener('mouseenter', stop);
+    lg.addEventListener('mouseleave', startAuto);
+    window.addEventListener('resize', () => go(idx, false));
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : startAuto()));
+
+    // swipe
+    let sx = 0, sy = 0, swiping = false, moved = false;
+    track.addEventListener('pointerdown', (e) => { sx = e.clientX; sy = e.clientY; swiping = true; moved = false; });
+    track.addEventListener('pointermove', (e) => { if (swiping && Math.abs(e.clientX - sx) > 8 && Math.abs(e.clientX - sx) > Math.abs(e.clientY - sy)) moved = true; });
+    track.addEventListener('pointerup', (e) => {
+      if (!swiping) return; swiping = false;
+      const dx = e.clientX - sx;
+      if (moved && Math.abs(dx) > 40) { dx < 0 ? next() : prev(); startAuto(); }
+    });
+    track.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+    // fullscreen viewer
+    const lb = lg.querySelector<HTMLDialogElement>('[data-lb]')!;
+    const lbImg = lb.querySelector<HTMLImageElement>('[data-lb-img]')!;
+    const lbCount = lb.querySelector<HTMLElement>('[data-lb-count]')!;
+    const opens = Array.from(lg.querySelectorAll<HTMLButtonElement>('[data-lg-open]'));
+    let cur = 0;
+    const show = (i: number) => {
+      cur = (i + opens.length) % opens.length;
+      lbImg.src = opens[cur].dataset.full!;
+      lbImg.alt = opens[cur].querySelector('img')?.alt ?? '';
+      lbCount.textContent = `${cur + 1} / ${opens.length}`;
+    };
+    opens.forEach((b, i) => b.addEventListener('click', () => { stop(); show(i); lb.showModal(); }));
+    lb.querySelector('[data-lb-next]')!.addEventListener('click', () => show(cur + 1));
+    lb.querySelector('[data-lb-prev]')!.addEventListener('click', () => show(cur - 1));
+    lb.querySelector('[data-lb-close]')!.addEventListener('click', () => lb.close());
+    lb.addEventListener('close', () => { go(cur, false); startAuto(); });
+    lb.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') show(cur + 1); if (e.key === 'ArrowLeft') show(cur - 1); });
+    let lx = 0;
+    lb.addEventListener('pointerdown', (e) => (lx = e.clientX));
+    lb.addEventListener('pointerup', (e) => { const d = e.clientX - lx; if (Math.abs(d) > 50) show(cur + (d < 0 ? 1 : -1)); });
+
+    const ready = () => { go(0, false); startAuto(); };
+    if (document.readyState === 'complete') ready(); else window.addEventListener('load', ready);
+    go(0, false);
+  });
+</script>

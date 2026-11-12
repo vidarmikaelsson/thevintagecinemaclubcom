@@ -1,0 +1,263 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+import IconRow from '../components/IconRow.astro';
+import MusicPlayer from '../components/MusicPlayer.astro';
+import VideoGallery from '../components/VideoGallery.astro';
+import LiveGallery from '../components/LiveGallery.astro';
+import { LISTEN_ICONS, FOOTER_ICONS, MAIL, BOOKING_MAIL, SITE_URL } from '../lib/site';
+
+const gigs = [
+  { date: '26.09.2026', venue: 'Rock Aid - Bürmoos', href: 'https://www.facebook.com/profile.php?id=61592576111446' },
+  { date: '24.10.2026', venue: 'Cafe Carina - Wien', href: 'https://www.cafe-carina.at' },
+  { date: '06.11.2026', venue: 'Rockhouse - Salzburg', href: 'https://www.rockhouse.at' },
+];
+
+const videos = [
+  { title: 'The_vintage_cinema_club_-_Next_to_the_body', src: '/video/next-to-the-body.mp4', poster: 'fb29f0_3e3b149f115246cf880c0cf040f6eb3c.jpg', duration: '04:09' },
+  { title: 'THE BEAT WITH THE RHYTHM', src: '/video/the-beat-with-the-rhythm.mp4', poster: 'fb29f0_65255b59079e4115b96a2dd3ef1534b2.jpg', duration: '05:22' },
+  { title: '19_9', src: '/video/19-9.mp4', poster: 'fb29f0_bee27a702e4746619ba59ff84fc6f79a.jpg', duration: '03:49' },
+];
+
+const liveAlt = 'The Vintage Cinema Club live in Salzburg – Indie-Rock-Band';
+const live = [
+  '149dd1_4533dbb2f1aa4f5099422674e745db20.jpg', '149dd1_3cccdb7660694f718832b0cf73c80170.jpg', '149dd1_0fd10c6597264a94aef28d9a86c69925.jpg',
+  '149dd1_a1ba18645acd41e1841378acc9c1d727.jpg', '149dd1_677941c7feff4389a38b1f00eed9ebfd.jpg', '149dd1_2a6437c9c7af4970ab7863718683c8a4.jpg',
+  '149dd1_5d9929fdf5834e699a46763ecf0a3a97.jpg', '149dd1_2fc308ed5601483baf32d60a5d97354b.jpg', '149dd1_d0ec196f680042fda1733684cd9425b3.jpg',
+  '149dd1_553ccb2e6b024e24b2ab7a4efeab6c42.jpg', '149dd1_a51b476d56064ae190c922cc22b38714.jpg', '149dd1_f50102423a034a49a729a55fa4101718.jpg',
+  '149dd1_abfd9a311d3b436a91e386a21ed1ccef.jpg', '149dd1_5529dfc518c2408eb464a134737238d9.jpg', '149dd1_7309300d95aa427eac2619b0d74f1645.jpg',
+  '149dd1_1188115e5ff643e79fa2068f95b74319.jpg', '149dd1_af3bd3a7892e49dbbc3a476fdccbb215.jpg', '149dd1_44cfc5c3df804d8899dfacb1b3b1f75f.jpg',
+  '149dd1_d7a41372ef0940e7a34c0c2bb231ae59.jpg', '149dd1_167c405ee37d4ed7b96201795c83ad80.jpg', '149dd1_0d8088497e934e0fb2256ab0fc24382e.jpg',
+  '149dd1_10417778bcdd4ed0a4ca8a0f9e1fa9ec.jpg', '149dd1_dda6df0bd4e24b4db5858982614b18bf.jpg', '149dd1_9f2933f3013f4d99aedee5a5bd67fa74.jpg',
+  '149dd1_5c356760bfe94fe2876aa4c7fee7e302.jpg',
+].map((src, i) => ({ src, alt: i >= 23 ? liveAlt : '' }));
+
+const pink = { bg: 'rgb(219,56,183)', text: '#fff', control: '#000', divider: '#000', active: '#000', font: 'var(--f-display)', sizes: [20, 16, 20, 12] as [number, number, number, number] };
+
+const jsonLd = [
+  { '@context': 'https://schema.org/', '@type': 'LocalBusiness', name: 'The Vintage Cinema Club', url: SITE_URL, address: { '@type': 'PostalAddress', addressCountry: 'AT', addressLocality: 'Salzburg' } },
+  { '@context': 'https://schema.org/', '@type': 'WebSite', name: 'The Vintage Cinema Club', url: SITE_URL },
+  { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: videos.map((v, i) => ({ '@type': 'VideoObject', name: v.title, description: v.title, contentUrl: SITE_URL + v.src, position: i + 1 })) },
+];
+---
+<Base
+  title="The Vintage Cinema Club | Indie-Rock-Band aus Salzburg, Österreich"
+  description="Indie-Rock-Band aus Salzburg, Österreich: The Vintage Cinema Club verbindet britpop-inspirierten Sound mit Retro-Ästhetik und elektronischem Twist."
+  path=""
+  bg="fixed"
+  jsonLd={jsonLd}
+>
+  <div id="top"></div>
+
+  <!-- Band photo -->
+  <section class="s-hero">
+    <div class="col">
+      <Img src="149dd1_53ecf591a655465589904946a836774a.jpg" alt="TVCC_Bandfoto_2026_dirty_neu.jpg" w={980} h={654} loading="eager" class="hero-img" />
+    </div>
+  </section>
+
+  <!-- Intro + Gigs -->
+  <section class="s-intro">
+    <div class="col">
+      <h1 class="intro-title pink">The Vintage Cinema Club</h1>
+      <h6 class="intro-sub">ist eine Indie-Rock-Band aus Salzburg/Wien, Österreich. </h6>
+      <h6 class="intro-sub">Der Sound verbindet britpop-inspirierte Gitarren mit Retro-Ästhetik &amp; elektronischen Elementen.</h6>
+
+      <div class="gigs">
+        <h3 class="gigs-label pink">Gigs:</h3>
+        <ul class="gigs-list">
+          {gigs.map((g) => (
+            <li>
+              <p class="gig-date pink">{g.date}</p>
+              <p class="gig-venue"><a class="pink" href={g.href} target="_blank" rel="noreferrer noopener">{g.venue}</a></p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <p class="booking">
+        <a href={`mailto:${BOOKING_MAIL}`}>booking &amp; Infos: </a><a href={`mailto:${MAIL}`}>{MAIL}</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Release promo, listen links, live video -->
+  <section class="s-release">
+    <div class="col">
+      <a href="/nttb" class="release-link" aria-label="Next to the Body – mehr Infos">
+        <Img src="149dd1_57772d4e57a0489f973fe4e42ec9eb11.png" alt="NTTB_SM_Release4.png" w={549} h={664} />
+      </a>
+      <h6 class="listen pink">Jetzt anhören:</h6>
+      <IconRow items={LISTEN_ICONS} class="listen-icons" />
+      <div class="yt">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/GkgvDeJ73cY?autoplay=1&mute=1&loop=1&playlist=GkgvDeJ73cY&controls=1&rel=0&playsinline=1"
+          title="the vintage cinema club live @ Rockhouse Salzburg 12.12.2025"
+          loading="lazy"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bio -->
+  <section class="s-bio">
+    <div class="col bio">
+      <p>Eines kann man der Band nicht absprechen : </p>
+      <p>Konsequenz .<br />Wenn Vintage, dann richtig. Ganz oder gar nicht.<br />Vintage Style ist alles. Alles ist Vintage-Style .<br /></p>
+      <p>The Vintage Cinema Club geht keine Kompromisse ein. Weder beim Styling noch bei ihrer Musik. Das stellen die Fünf aus Salzburg immer wieder live und ganz besonders auch mit ihrem Debütalbum "Fashion" eindrucksvoll unter Beweis .</p>
+      <p><br />Christians markante Stimme, ein Gitarrensound im authentischen Britpop-Stil der beginnenden 1990er Jahre, getragen von sphärisch verspielten Soli und unterlegt mit treibenden Rhythmen. So schafft die Band den Spagat vom gitarrenlastigen Britpop-Sound zum New Wave igen Electronic-Pop/Rock. Dabei greifen die Fünf auf viele intensive Jahre des Musikmachens und Erfahrung zurück . </p>
+      <p><br /></p>
+      <p>Das grandiose Ergebnis: routiniert, souverän - und doch so unverbraucht frisch! Vintage eben .</p>
+    </div>
+  </section>
+
+  <!-- Music -->
+  <section class="s-music" id="music">
+    <div class="col">
+      <h1 class="music-title pink">Music</h1>
+      <h1 class="sub-title">Audio</h1>
+      <div class="players">
+        <MusicPlayer album="selection" variant="card" width={350} height={688} theme={pink} autoplay shareLabel="Share Playlist" shareUrl={SITE_URL} />
+        <MusicPlayer album="fashion" variant="card" width={350} height={695} theme={pink} shareLabel="Share Album" getAlbumUrl="https://open.spotify.com/intl-de/artist/0OjzsnJLcRhDj3YnZfU2Iz?si=gpwvbKRlTlms_ngyvQSirQ" shareUrl={SITE_URL} />
+      </div>
+
+      <div class="vinyl">
+        <div class="vinyl-text">
+          <h4 class="vinyl-name">Fashion</h4>
+          <h5 class="vinyl-offer pink">als vinyl<br />erhältlich<br />für 25€</h5>
+        </div>
+        <h6 class="vinyl-mail"><a href={`mailto:${MAIL}`}>{MAIL}</a></h6>
+        <a class="vinyl-cover" href={`mailto:${MAIL}`} aria-label="Vinyl „Fashion“ per E-Mail bestellen">
+          <Img src="149dd1_ff2b8e53751640be89767adb19ea7af5.jpg" alt="Fashion – Vinyl" w={276} h={276} />
+        </a>
+      </div>
+
+      <h1 class="sub-title video-title">Video</h1>
+      <VideoGallery videos={videos} shareUrl={SITE_URL} />
+    </div>
+  </section>
+
+  <!-- Live & Loud -->
+  <section class="s-live">
+    <h2 class="live-title pink">Live &amp; Loud</h2>
+    <LiveGallery images={live} />
+  </section>
+
+  <!-- Footer -->
+  <footer class="s-footer">
+    <div class="col">
+      <p class="f-name pink">The Vintage Cinema Club</p>
+      <p class="f-mail"><a href={`mailto:${MAIL}`}>{MAIL}</a></p>
+      <IconRow items={FOOTER_ICONS} variant="white" class="f-icons" />
+      <p class="f-copy">©2026 von The Vintage Cinema Club. Erstellt mit Wix.com</p>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero-img { width: 100%; height: auto; aspect-ratio: 980 / 654; }
+  .s-hero { padding-bottom: 2px; }
+
+  /* ---------- Intro ---------- */
+  .s-intro { padding: 12px 0 46px; text-align: center; }
+  .intro-title { font-size: 45px; line-height: 45px; letter-spacing: 0.35em; }
+  .intro-sub { font-size: 18px; line-height: 25.38px; }
+  .gigs { display: grid; grid-template-columns: 87px 233px; column-gap: 7px; justify-content: start; padding-left: 331px; margin-top: 1px; text-align: left; }
+  .gigs-label { font-size: 30px; line-height: 67px; height: 79px; }
+  .gigs-list { list-style: none; margin: 30px 0 0; padding: 0 0 26px; }
+  .gigs-list li + li { margin-top: 23px; }
+  .gig-date { font-size: 27px; line-height: 30px; }
+  .gig-venue { font-size: 18px; line-height: 26px; }
+  .gig-venue a { text-decoration: underline; }
+  .booking { margin-top: 12px; font-size: 18px; line-height: 33.84px; }
+  .booking a { text-decoration: underline; }
+
+  /* ---------- Release ---------- */
+  .s-release { padding: 10px 0 85px; text-align: center; }
+  .release-link { display: block; width: 549px; max-width: 100%; margin: 0 auto; }
+  .release-link img { width: 100%; height: auto; }
+  .listen { font-size: 22px; line-height: 31px; }
+  .s-release :global(.listen-icons) { margin-top: 21px; }
+  .yt { margin-top: 41px; aspect-ratio: 980 / 548; background: #000; }
+  .yt iframe { width: 100%; height: 100%; border: 0; }
+
+  /* ---------- Bio ---------- */
+  .s-bio { padding: 52px 0 38px; }
+  .bio { text-align: center; font-size: 25px; line-height: 1.1; }
+
+  /* ---------- Music ---------- */
+  .s-music { padding: 9px 0 14px; }
+  .music-title { font-size: 74px; line-height: 88.8px; text-align: center; }
+  .sub-title { font-size: 56px; line-height: 67.2px; height: 70px; }
+  .players { display: flex; justify-content: space-between; align-items: flex-start; }
+  .vinyl { position: relative; height: 276px; margin-top: 41px; }
+  .vinyl-text { position: absolute; left: 431px; top: 75px; width: 310px; text-align: center; }
+  .vinyl-name { font-size: 40px; line-height: 54px; }
+  .vinyl-offer { font-size: 28px; line-height: 38.5px; }
+  .vinyl-mail { position: absolute; left: 223px; top: 244px; width: 518px; text-align: center; font-size: 22px; line-height: 31px; }
+  .vinyl-cover { position: absolute; left: 686px; top: 0; width: 276px; height: 276px; }
+  .vinyl-cover img { width: 100%; height: 100%; }
+  .video-title { margin-top: 37px; }
+
+  /* ---------- Live ---------- */
+  .s-live { text-align: center; }
+  .live-title { font-size: 75px; line-height: 90px; }
+
+  /* ---------- Footer ---------- */
+  .s-footer { padding: 11px 0 0; text-align: center; height: 380px; }
+  .f-name { font-size: 37px; line-height: 52.17px; }
+  .f-mail { margin-top: 24px; font-size: 25px; line-height: 47px; }
+  .f-mail a { text-decoration: underline; }
+  .s-footer :global(.f-icons) { margin-top: 96px; }
+  .f-copy { margin-top: 59px; font: 14px/25px var(--f-system); color: var(--grey); }
+
+  /* ---------- Tablet ---------- */
+  @media (max-width: 1000px) {
+    .col { padding-inline: var(--gutter); }
+    .s-hero .col { padding: 0; }
+    .gigs { padding-left: 0; justify-content: center; }
+    .players { justify-content: center; gap: 24px; flex-wrap: wrap; }
+    .vinyl { height: auto; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .vinyl-text, .vinyl-mail, .vinyl-cover { position: static; width: auto; }
+    .vinyl-cover { order: -1; width: 276px; }
+  }
+
+  /* ---------- Mobile (mirrors the Wix mobile layout) ---------- */
+  @media (max-width: 760px) {
+    .s-intro { padding: 22px 0 30px; }
+    .intro-title { font-size: 24px; line-height: 28px; letter-spacing: 0.3em; }
+    .intro-sub { font-size: 14px; line-height: 19px; }
+    .gigs { grid-template-columns: auto auto; margin-top: 22px; }
+    .gigs-label { font-size: 18px; line-height: 24px; height: auto; }
+    .gigs-list { margin-top: 0; }
+    .gigs-list li + li { margin-top: 14px; }
+    .gig-date { font-size: 18px; line-height: 22px; }
+    .gig-venue { font-size: 12px; line-height: 16px; }
+    .booking { font-size: 14px; line-height: 22px; margin-top: 26px; }
+    .s-release { padding-bottom: 40px; }
+    .release-link { width: 100%; }
+    .listen { font-size: 18px; margin-top: 12px; }
+    .yt { margin-top: 30px; margin-inline: calc(var(--gutter) * -1); }
+    .s-bio { padding: 30px 0; }
+    .bio { font-size: 17px; line-height: 1.2; }
+    .music-title { font-size: 44px; line-height: 54px; }
+    .sub-title { font-size: 32px; line-height: 40px; height: auto; text-align: center; margin-bottom: 14px; }
+    .players { flex-direction: column; align-items: stretch; gap: 22px; }
+    .vinyl-name { font-size: 28px; line-height: 36px; }
+    .vinyl-offer { font-size: 20px; line-height: 28px; }
+    .vinyl-mail { font-size: 15px; }
+    .vinyl-cover { width: 220px; height: 220px; }
+    .video-title { margin-top: 30px; }
+    .s-music :global(.vg) { margin-inline: calc(var(--gutter) * -1); width: calc(100% + 2 * var(--gutter)); }
+    .live-title { font-size: 40px; line-height: 64px; margin-top: 20px; }
+    .s-footer { height: auto; padding: 24px 0 30px; }
+    .f-name { font-size: 22px; line-height: 32px; }
+    .f-mail { font-size: 16px; line-height: 30px; margin-top: 10px; }
+    .s-footer :global(.f-icons) { margin-top: 26px; }
+    .f-copy { margin-top: 24px; font-size: 10px; }
+  }
+</style>

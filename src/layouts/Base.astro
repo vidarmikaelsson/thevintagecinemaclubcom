@@ -1,0 +1,85 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import { media } from '../lib/media';
+import { PAGE_BG, SITE_URL } from '../lib/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** path without trailing slash, e.g. "/nttb" ("" for home) */
+  path: string;
+  noindex?: boolean;
+  /**
+   * fixed   – purple gradient fixed to the viewport (home page)
+   * stretch – gradient stretched over the whole page (nttb, presskit, heimo)
+   * black   – plain black page (event pages)
+   * white   – plain white page
+   */
+  bg?: 'fixed' | 'stretch' | 'black' | 'white';
+  ogImage?: string;
+  jsonLd?: object[];
+}
+
+const { title, description, path, noindex = false, bg = 'black', ogImage = '149dd1_53ecf591a655465589904946a836774a.jpg', jsonLd = [] } = Astro.props;
+const canonical = SITE_URL + path;
+const bgImg = bg === 'fixed' || bg === 'stretch' ? await getImage({ src: media(PAGE_BG), width: 1440, format: 'webp', quality: 80 }) : null;
+const og = await getImage({ src: media(ogImage), width: 1200, format: 'jpg', quality: 82 });
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#2a1a5e" />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="The Vintage Cinema Club" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL(og.src, SITE_URL).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <link rel="preload" href="/fonts/tvcc-display.woff2" as="font" type="font/woff2" crossorigin />
+    {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+    <slot name="head" />
+  </head>
+  <body class={`bg-${bg}`} style={bgImg ? `--page-bg:url(${bgImg.src})` : undefined}>
+    {bg === 'fixed' && <div class="page-bg-fixed" aria-hidden="true"></div>}
+    <main id="main">
+      <slot />
+    </main>
+    <a href="#top" class="to-top" aria-label="Nach oben" data-to-top>
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 15l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <script>
+      const btn = document.querySelector<HTMLAnchorElement>('[data-to-top]');
+      if (btn) {
+        const toggle = () => btn.classList.toggle('show', window.scrollY > 400);
+        window.addEventListener('scroll', toggle, { passive: true });
+        toggle();
+        btn.addEventListener('click', (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  body.bg-white { background: #fff; color: #000; }
+  /* Home: gradient fixed to the viewport (position:fixed works on iOS, unlike background-attachment) */
+  .page-bg-fixed { position: fixed; inset: 0; z-index: -1; background: #000 var(--page-bg) center / cover no-repeat; }
+  /* Sub pages: gradient stretched over the full page height */
+  body.bg-stretch main { background: #000 var(--page-bg) center top / 100% 100% no-repeat; }
+  main { position: relative; display: block; }
+
+  /* Mobile "back to top" button (as on the Wix mobile site) */
+  .to-top { position: fixed; right: 16px; bottom: 20px; z-index: 50; display: none; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #000; color: #fff; border: 1.5px solid #fff; opacity: 0; transition: opacity .25s; }
+  .to-top.show { opacity: .9; }
+  @media (max-width: 760px) { .to-top { display: grid; } .to-top:not(.show) { pointer-events: none; } }
+</style>

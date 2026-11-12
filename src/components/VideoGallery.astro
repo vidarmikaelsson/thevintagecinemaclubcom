@@ -1,0 +1,164 @@
+---
+/**
+ * Replacement for the Wix Video "All Videos" channel widget (classic layout):
+ * large player with poster + "Video abspielen" button, thumbnail strip below.
+ * Videos are self-hosted MP4s in /public/video.
+ */
+import { getImage } from 'astro:assets';
+import Img from './Img.astro';
+import { media } from '../lib/media';
+
+interface Video { title: string; src: string; poster: string; duration: string }
+interface Props { title?: string; videos: Video[]; shareUrl: string }
+const { title = 'All Videos', videos, shareUrl } = Astro.props;
+const posters = await Promise.all(videos.map((v) => getImage({ src: media(v.poster), width: 1880, format: 'webp', quality: 78 })));
+const first = videos[0];
+---
+<section class="vg" aria-label={`"${title}" Widget für Kanalvideos`} data-vg data-share-url={shareUrl}>
+  <header class="vg-head">
+    <h2 class="vg-title">{title}</h2>
+    <button class="vg-ic" type="button" data-vg-share aria-label="Teilen">
+      <svg viewBox="0 0 24 24"><circle cx="17" cy="6" r="2"/><circle cx="7" cy="12" r="2"/><circle cx="17" cy="18" r="2"/><path d="M8.8 11l6.4-3.7M8.8 13l6.4 3.7" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+    </button>
+    <button class="vg-ic" type="button" data-vg-info aria-label="Info">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="6.5" r="1.4"/><path d="M12 10v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <div class="vg-pop" data-vg-pop hidden>
+      <a data-net="facebook" target="_blank" rel="noreferrer noopener">Facebook</a>
+      <a data-net="twitter" target="_blank" rel="noreferrer noopener">Twitter</a>
+      <a data-net="pinterest" target="_blank" rel="noreferrer noopener">Pinterest</a>
+      <a data-net="tumblr" target="_blank" rel="noreferrer noopener">Tumblr</a>
+      <button type="button" data-net="copy">Link kopieren</button>
+    </div>
+  </header>
+
+  <div class="vg-stage">
+    <img class="vg-poster" src={posters[0].src} alt={title} width="940" height="529" loading="lazy" decoding="async" data-vg-poster />
+    <video class="vg-video" controls playsinline preload="none" hidden data-vg-video></video>
+    <button class="vg-play" type="button" data-vg-play>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>
+      Video abspielen
+    </button>
+    <div class="vg-info" data-vg-infobox hidden>
+      <h3 data-vg-infotitle>{first.title}</h3>
+      <p>Dauer <span data-vg-infodur>{first.duration}</span></p>
+    </div>
+  </div>
+
+  <ul class="vg-strip">
+    {videos.map((v, i) => (
+      <li>
+        <button class="vg-thumb" type="button" data-vg-item={i} data-src={v.src} data-poster={posters[i].src} data-title={v.title} data-duration={v.duration} aria-label={`${v.title} abspielen`}>
+          <Img src={v.poster} alt={v.title} w={220} h={128} />
+          <span class="vg-thumb-over">
+            <h3>{v.title}</h3>
+            <span class="vg-thumb-dur" aria-label={`Dauer ${v.duration}`}>{v.duration}</span>
+            <svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="27" fill="rgba(0,0,0,.35)" stroke="#fff" stroke-width="1.5"/><path d="M23 18.5v19l15-9.5z" fill="#fff"/></svg>
+          </span>
+        </button>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .vg { position: relative; width: 100%; max-width: 980px; min-height: 834px; background: #000; padding: 0 20px 20px; font-family: var(--f-display); }
+  .vg-head { position: relative; display: flex; align-items: center; height: 55px; gap: 16px; }
+  .vg-title { flex: 1; font-size: 18px; line-height: 32px; color: #000; }  /* black on black – as on the original */
+  .vg-ic { width: 24px; height: 24px; color: var(--pink); }
+  .vg-ic svg { width: 100%; height: 100%; fill: currentColor; }
+  .vg-pop { position: absolute; z-index: 6; right: 0; top: 46px; display: flex; flex-direction: column; background: #fff; min-width: 160px; box-shadow: 0 4px 18px rgba(0,0,0,.4); }
+  .vg-pop[hidden] { display: none; }
+  .vg-pop a, .vg-pop button { padding: 11px 14px; font: 14px var(--f-sans); color: #000; text-decoration: none; text-align: left; }
+  .vg-pop a:hover, .vg-pop button:hover { background: #f1e3ee; }
+
+  .vg-stage { position: relative; aspect-ratio: 940 / 529; background: #000; }
+  .vg-poster, .vg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
+  .vg-video { object-fit: contain; }
+  .vg-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 28px 0 22px; border-radius: 999px; background: var(--pink); color: #000; font: 12px/1 var(--f-system); letter-spacing: .02em; text-transform: uppercase; transition: filter .2s; }
+  .vg-play svg { width: 14px; height: 14px; }
+  .vg-play:hover { filter: brightness(1.1); }
+  .vg.is-playing .vg-play, .vg.is-playing .vg-poster { display: none; }
+  .vg-info { position: absolute; inset: 0; background: rgba(0,0,0,.8); padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; text-align: center; color: #fff; }
+  .vg-info[hidden] { display: none; }
+  .vg-info h3 { font-size: 28px; }
+
+  .vg-strip { list-style: none; margin: 49px 0 0; padding: 4px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .vg-thumb { position: relative; display: block; width: 224px; height: 132px; padding: 2px; }
+  .vg-thumb img { width: 220px; height: 128px; }
+  .vg-thumb.is-active { outline: 2px solid var(--pink); outline-offset: -2px; }
+  .vg-thumb-over { position: absolute; inset: 2px; padding: 10px 14px; color: #fff; text-align: left; background: rgba(0,0,0,.45); opacity: 0; transition: opacity .2s; }
+  .vg-thumb-over h3 { font-size: 14px; line-height: 19px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-all; }
+  .vg-thumb-dur { position: absolute; left: 14px; bottom: 8px; font-size: 12px; }
+  .vg-thumb-over svg { position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; transform: translate(-50%, -40%); }
+  .vg-thumb:hover .vg-thumb-over, .vg-thumb:focus-visible .vg-thumb-over { opacity: 1; }
+
+  @media (max-width: 760px) {
+    .vg { min-height: 0; padding: 0 0 12px; }
+    .vg-head { padding: 0 12px; height: 44px; }
+    .vg-strip { margin-top: 12px; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 12px; }
+    .vg-strip li { scroll-snap-align: start; }
+    .vg-thumb { width: 164px; height: 96px; }
+    .vg-thumb img { width: 160px; height: 92px; }
+    .vg-thumb-over { opacity: 1; background: rgba(0,0,0,.25); }
+    .vg-thumb-over h3 { display: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-vg]').forEach((vg) => {
+    const video = vg.querySelector<HTMLVideoElement>('[data-vg-video]')!;
+    const poster = vg.querySelector<HTMLImageElement>('[data-vg-poster]')!;
+    const items = Array.from(vg.querySelectorAll<HTMLButtonElement>('[data-vg-item]'));
+    const infoBox = vg.querySelector<HTMLElement>('[data-vg-infobox]')!;
+    let current = items[0];
+
+    const select = (btn: HTMLButtonElement, autoplay: boolean) => {
+      current = btn;
+      items.forEach((b) => b.classList.toggle('is-active', b === btn));
+      poster.src = btn.dataset.poster!;
+      poster.alt = btn.dataset.title!;
+      vg.querySelector('[data-vg-infotitle]')!.textContent = btn.dataset.title!;
+      vg.querySelector('[data-vg-infodur]')!.textContent = btn.dataset.duration!;
+      video.pause();
+      video.removeAttribute('src');
+      vg.classList.remove('is-playing');
+      video.hidden = true;
+      if (autoplay) start();
+    };
+    const start = () => {
+      infoBox.hidden = true;
+      if (video.getAttribute('src') !== current.dataset.src) video.src = current.dataset.src!;
+      video.poster = current.dataset.poster!;
+      video.hidden = false;
+      vg.classList.add('is-playing');
+      video.play().catch(() => {});
+    };
+    vg.querySelector('[data-vg-play]')!.addEventListener('click', start);
+    items.forEach((b) => b.addEventListener('click', () => select(b, true)));
+    video.addEventListener('ended', () => {
+      const next = items[(items.indexOf(current) + 1) % items.length];
+      select(next, false);
+    });
+    vg.querySelector('[data-vg-info]')!.addEventListener('click', () => (infoBox.hidden = !infoBox.hidden));
+
+    // share
+    const pop = vg.querySelector<HTMLElement>('[data-vg-pop]')!;
+    const url = vg.dataset.shareUrl!;
+    const enc = encodeURIComponent(url);
+    const nets: Record<string, string> = {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${enc}`,
+      twitter: `https://twitter.com/intent/tweet?url=${enc}`,
+      pinterest: `https://pinterest.com/pin/create/button/?url=${enc}`,
+      tumblr: `https://www.tumblr.com/share/link?url=${enc}`,
+    };
+    pop.querySelectorAll<HTMLAnchorElement>('a[data-net]').forEach((a) => (a.href = nets[a.dataset.net!]));
+    pop.querySelector('[data-net="copy"]')!.addEventListener('click', async (e) => {
+      const b = e.currentTarget as HTMLButtonElement;
+      try { await navigator.clipboard.writeText(url); b.textContent = 'Link kopiert ✓'; } catch { b.textContent = url; }
+      setTimeout(() => { b.textContent = 'Link kopieren'; pop.hidden = true; }, 1400);
+    });
+    vg.querySelector('[data-vg-share]')!.addEventListener('click', (e) => { e.stopPropagation(); pop.hidden = !pop.hidden; });
+    document.addEventListener('click', (e) => { if (!pop.hidden && !pop.contains(e.target as Node)) pop.hidden = true; });
+  });
+</script>

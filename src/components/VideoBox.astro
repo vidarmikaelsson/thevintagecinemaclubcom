@@ -1,0 +1,34 @@
+---
+// Wix "VideoBox" equivalent: poster frame with a round play button, native controls once started.
+import { getImage } from 'astro:assets';
+import { media } from '../lib/media';
+
+interface Props { src: string; poster: string; width: number; height: number; label?: string; class?: string }
+const { src, poster, width, height, label = 'Video abspielen', class: cls } = Astro.props;
+const p = await getImage({ src: media(poster), width: width * 2, format: 'webp', quality: 78 });
+---
+<div class:list={['vb', cls]} style={`--w:${width}px;aspect-ratio:${width}/${height}`} data-vb>
+  <video src={src} poster={p.src} preload="none" playsinline controls={false} data-vb-video></video>
+  <button class="vb-play" type="button" aria-label={label} data-vb-play>
+    <svg viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="24" fill="rgba(0,0,0,.25)" stroke="#fff" stroke-width="2"/><path d="M20 15.5v19L35 25z" fill="#fff"/></svg>
+  </button>
+</div>
+
+<style>
+  .vb { position: relative; width: 100%; max-width: var(--w); background: #000; }
+  .vb video { width: 100%; height: 100%; object-fit: cover; }
+  .vb-play { position: absolute; left: 50%; top: 50%; width: 50px; height: 50px; transform: translate(-50%, -50%); transition: transform .2s; }
+  .vb-play:hover { transform: translate(-50%, -50%) scale(1.08); }
+  .vb.is-started .vb-play { display: none; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-vb]').forEach((box) => {
+    const v = box.querySelector<HTMLVideoElement>('[data-vb-video]')!;
+    box.querySelector('[data-vb-play]')!.addEventListener('click', () => {
+      box.classList.add('is-started');
+      v.controls = true;
+      v.play().catch(() => {});
+    });
+  });
+</script>

@@ -1,0 +1,208 @@
+{
+  "selection": {
+    "title": "Selection",
+    "artist": "The Vintage Cinema Club",
+    "type": "PLAYLIST",
+    "cover": "fb29f0_cef155df9b564c368a58528c8ef3951e.jpg",
+    "links": [],
+    "tracks": [
+      {
+        "title": "Exposé En Permanence",
+        "artist": "The Vintage Cinema Club",
+        "duration": "05:24",
+        "src": "/audio/fb29f0_b2c52a5396394c9ca1e181b513566149-128.mp3"
+      },
+      {
+        "title": "All the Love Lost In Bangkok",
+        "artist": "The Vintage Cinema Club",
+        "duration": "03:30",
+        "src": "/audio/fb29f0_e656101bdec44b5995bbbb7cc71cecc6-128.mp3"
+      },
+      {
+        "title": "The Picture Of You",
+        "artist": "The Vintage Cinema Club",
+        "duration": "03:32",
+        "src": "/audio/fb29f0_f4efbe55291f4dc0a20807b7f6b36f83-128.mp3"
+      },
+      {
+        "title": "Fashion",
+        "artist": "The Vintage Cinema Club",
+        "duration": "04:03",
+        "src": "/audio/fb29f0_942a649b5c63482bb4089673f0cfa7d0-128.mp3"
+      },
+      {
+        "title": "The Beat With The Rhythm",
+        "artist": "The Vintage Cinema Club",
+        "duration": "05:30",
+        "src": "/audio/149dd1_0a1564f74c6d4790ac97094ea1d4ccac-128.mp3"
+      }
+    ]
+  },
+  "fashion": {
+    "title": "Fashion",
+    "artist": "the vintage cinema club",
+    "type": "ALBUM",
+    "cover": "149dd1_ff2b8e53751640be89767adb19ea7af5.jpg",
+    "links": [
+      "https://open.spotify.com/intl-de/artist/0OjzsnJLcRhDj3YnZfU2Iz?si=gpwvbKRlTlms_ngyvQSirQ"
+    ],
+    "tracks": [
+      {
+        "title": "Electronic Kids",
+        "artist": "the vintage cinema club",
+        "duration": "00:18",
+        "src": "/audio/149dd1_190dc8c8fc4047a597742dc2af19a914-128.mp3"
+      },
+      {
+        "title": "Dance Into The Midnight",
+        "artist": "the vintage cinema club",
+        "duration": "03:58",
+        "src": "/audio/149dd1_4ba2134f01504bc7a24f2e39ff8f6f6a-128.mp3"
+      },
+      {
+        "title": "The Beat With The Rhythm",
+        "artist": "the vintage cinema club",
+        "duration": "05:30",
+        "src": "/audio/149dd1_469d040f216243a1ab85ceb6c00257ae-128.mp3"
+      },
+      {
+        "title": "19_9",
+        "artist": "the vintage cinema club",
+        "duration": "03:49",
+        "src": "/audio/149dd1_2a2e3a09252a4d1a849d2e9660f7930c-128.mp3"
+      },
+      {
+        "title": "Transmission",
+        "artist": "the vintage cinema club",
+        "duration": "04:40",
+        "src": "/audio/149dd1_1b09b738c8bd47b8902ce65020cfa625-128.mp3"
+      },
+      {
+        "title": "Out Of Control",
+        "artist": "the vintage cinema club",
+        "duration": "04:31",
+        "src": "/audio/149dd1_5fd39c915b40466db7387be32b9c8cd3-128.mp3"
+      },
+      {
+        "title": "Elements Of Spirit",
+        "artist": "the vintage cinema club",
+        "duration": "04:38",
+        "src": "/audio/149dd1_0b59c1c144b8425d985c35bdeba2635e-128.mp3"
+      },
+      {
+        "title": "Fashion",
+        "artist": "the vintage cinema club",
+        "duration": "04:03",
+        "src": "/audio/149dd1_96bfc7df4e324b4092924d31d78ef865-128.mp3"
+      },
+      {
+        "title": "Exposé En Permanence",
+        "artist": "the vintage cinema club",
+        "duration": "05:24",
+        "src": "/audio/149dd1_c2db2b5fea3e4af08ade599fcb7a19af-128.mp3"
+      },
+      {
+        "title": "The Picture Of You",
+        "artist": "the vintage cinema club",
+        "duration": "03:32",
+        "src": "/audio/149dd1_8a286624f0db4c2b8d9993a8d0664bb2-128.mp3"
+      }
+    ]
+  },
+  "nttb": {
+    "title": "Next to the Body",
+    "artist": "The Vintage Cinema Club",
+    "type": "SINGLE",
+    "cover": "149dd1_8cd6b85938914e45916dcd8be443ffd2.jpg",
+    "links": [],
+    "tracks": [
+      {
+        "title": "Next to the body (Live)",
+        "artist": "The Vintage Cinema Club",
+        "duration": "03:57",
+        "src": "/audio/149dd1_fe47fc4f161a438081f8108f31c9c02a-128.mp3"
+      }
+    ]
+  },
+  "g5": {
+    "title": "G5 Indie Night",
+    "artist": "The Vintage Cinema Club",
+    "type": "PLAYLIST",
+    "cover": null,
+    "links": [],
+    "tracks": [
+      {
+        "title": "South",
+        "artist": "Marbelite",
+        "duration": "05:18",
+        "src": "/audio/149dd1_2ca9175dad9244bb852d318e2c531ca0-128.mp3"
+      },
+      {
+        "title": "Sex",
+        "artist": "Roses & Tulips",
+        "duration": "04:01",
+        "src": "/audio/149dd1_c0fa413e179c47e9983089f9e4acf759-128.mp3"
+      },
+      {
+        "title": "Exposé En Permanence",
+        "artist": "The Vintage Cinema Club",
+        "duration": "05:24",
+        "src": "/audio/149dd1_c2db2b5fea3e4af08ade599fcb7a19af-128.mp3"
+      }
+    ]
+  },
+  "heimo": {
+    "title": "Heimo Erbse Preis 2027",
+    "artist": "The Vintage Cinema Club",
+    "type": "PLAYLIST",
+    "cover": "149dd1_619dd66ab5c54fcc9aa8ec5717973d3d.png",
+    "links": [],
+    "tracks": [
+      {
+        "title": "Next to the Body (live)",
+        "artist": "The Vintage Cinema Club",
+        "duration": "03:57",
+        "src": "/audio/149dd1_76d564180c3740d7aeed036976ab2a27-128.mp3"
+      },
+      {
+        "title": "Eyes Wide Shut (live)",
+        "artist": "The Vintage Cinema Club",
+        "duration": "02:48",
+        "src": "/audio/149dd1_663f2bc235da44d89ce7c14187954ce4-128.mp3"
+      },
+      {
+        "title": "Exposé en Permanence (live)",
+        "artist": "The Vintage Cinema Club",
+        "duration": "05:41",
+        "src": "/audio/149dd1_65142933e7b24e13852bf70a0d765d04-128.mp3"
+      }
+    ]
+  },
+  "saturday": {
+    "title": "Saturday Overdrive @ Café Carina",
+    "artist": "the vintage cinema club",
+    "type": "PLAYLIST",
+    "cover": null,
+    "links": [],
+    "tracks": [
+      {
+        "title": "Exposé en Permanence (live)",
+        "artist": "The Vintage Cinema Club",
+        "duration": "05:41",
+        "src": "/audio/149dd1_64dfde5a99cd40c089ff354558147259-128.mp3"
+      },
+      {
+        "title": "Lovely Rita",
+        "artist": "Candid",
+        "duration": "05:00",
+        "src": "/audio/149dd1_a0c7668134864890b01142b28d6924d8-128.mp3"
+      },
+      {
+        "title": "Run Away",
+        "artist": "Anjoana K.",
+        "duration": "03:25",
+        "src": "/audio/149dd1_20bdb3ee249d45a0ac879e015790acc7-128.mp3"
+      }
+    ]
+  }
+}
