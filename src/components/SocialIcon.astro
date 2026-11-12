@@ -20,10 +20,15 @@ const paths: Record<Name, string> = {
 };
 const p = paths[name];
 const uid = `${name}-${variant}-${Math.random().toString(36).slice(2, 8)}`;
+// inner padding (in 24-unit viewBox) so glyph sizes match the original icon set
+const pad = name === 'applemusic' || variant === 'grey' ? 0 : variant === 'white' && name === 'facebook' ? 1 : 3;
+const viewBox = `${-pad} ${-pad} ${24 + 2 * pad} ${24 + 2 * pad}`;
 // bare "f" for the white footer variant (the original footer used a plain f, not the round badge)
+// beamed double note (footer Apple Music icon)
+const note = 'M10.2 7.6l7.3-1.7v9.6a2.4 2.4 0 1 1-1.5-2.2V9.2l-4.3 1v6.9a2.4 2.4 0 1 1-1.5-2.2z';
 const bareF = 'M13.6 22v-8.4h2.8l.45-3.3H13.6V8.2c0-.95.27-1.6 1.63-1.6h1.73V3.66c-.3-.04-1.33-.13-2.53-.13-2.5 0-4.2 1.53-4.2 4.33v2.44H7.4v3.3h2.83V22z';
 ---
-<svg class={cls} width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+<svg class={cls} width={size} height={size} viewBox={viewBox} aria-hidden="true" focusable="false">
   {variant === 'color' && name === 'spotify' && <path d={p} fill={`#${siSpotify.hex}`} />}
   {variant === 'color' && name === 'applemusic' && (
     <>
@@ -44,8 +49,14 @@ const bareF = 'M13.6 22v-8.4h2.8l.45-3.3H13.6V8.2c0-.95.27-1.6 1.63-1.6h1.73V3.6
   {variant === 'white' && name === 'facebook' && <path d={bareF} fill="#fff" />}
   {variant === 'white' && name === 'applemusic' && (
     <>
-      <defs><clipPath id={uid}><circle cx="12" cy="12" r="12" /></clipPath></defs>
-      <path d={p} fill="#fff" clip-path={`url(#${uid})`} transform="translate(12 12) scale(1.35) translate(-12 -12)" />
+      <!-- white circle with a beamed double note cut out -->
+      <defs>
+        <mask id={uid}>
+          <circle cx="12" cy="12" r="12" fill="#fff" />
+          <path d={note} fill="#000" />
+        </mask>
+      </defs>
+      <circle cx="12" cy="12" r="12" fill="#fff" mask={`url(#${uid})`} />
     </>
   )}
   {variant === 'white' && name !== 'facebook' && name !== 'applemusic' && <path d={p} fill="#fff" />}

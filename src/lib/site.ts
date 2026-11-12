@@ -31,4 +31,4 @@ export const FOOTER_ICONS: { href: string; icon: Icon; label: string }[] = [
   { href: LINKS.appleMusic, icon: 'applemusic', label: 'The Vintage Cinema Club auf Apple Music' },
 ];
 
-export const PAGE_BG = '149dd1_30bd1a8d7fe34eecb3cfd3977943da0b.png';
+export const PAGE_BG = 'hintergrund-verlauf.png';

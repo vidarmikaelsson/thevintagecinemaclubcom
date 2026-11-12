@@ -2,18 +2,24 @@
 import Base from '../layouts/Base.astro';
 import IconRow from '../components/IconRow.astro';
 import { LISTEN_ICONS } from '../lib/site';
+import { breadcrumbSchema } from '../lib/schema';
 const zip = '/files/TVCC_Presskit_2026.zip';
 ---
-<Base title="The Vintage Cinema Club - Next to the Body (Live)" path="/presskit" noindex bg="stretch">
+<Base
+  title="Presskit | The Vintage Cinema Club"
+  description="Presskit von The Vintage Cinema Club zum Download (ZIP, ca. 22 MB): Anschreiben 2026, Backdrop, Bandfotos und Logo."
+  path="/presskit" noindex bg="stretch"
+  jsonLd={[breadcrumbSchema([{ name: 'The Vintage Cinema Club', path: '' }, { name: 'Presskit', path: '/presskit' }])]}
+>
   <div class="col page">
-    <h2 class="brand pink">THE VINTAGE CINEMA CLUB</h2>
-    <h5 class="headline">
+    <p class="brand pink">THE VINTAGE CINEMA CLUB</p>
+    <h1 class="headline">
       <br />
       <a class="dl" href={zip} download="TVCC_Presskit_2026.zip" target="_blank">Download</a><br />
       <a class="pk pink" href={zip} download="TVCC_Presskit_2026.zip" target="_blank">Presskit</a>
-    </h5>
+    </h1>
     <IconRow items={LISTEN_ICONS} class="icons" />
-    <h5 class="home-link"><a href="/" target="_blank">zur Hauptseite<br />www.thevintagecinemaclub.com</a></h5>
+    <p class="home-link"><a href="/" target="_blank">zur Hauptseite<br />www.thevintagecinemaclub.com</a></p>
   </div>
 </Base>
 

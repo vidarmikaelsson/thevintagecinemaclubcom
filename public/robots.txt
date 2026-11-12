@@ -1,4 +1,9 @@
+# The Vintage Cinema Club – www.thevintagecinemaclub.com
+# All crawlers, including search engines and AI assistants / answer engines,
+# may crawl the site. Pages that should not appear in results carry a
+# <meta name="robots" content="noindex"> tag instead of being blocked here,
+# so crawlers can still see that instruction.
 User-agent: *
 Allow: /
 
-Sitemap: https://www.thevintagecinemaclub.com/sitemap.xml
+Sitemap: https://www.thevintagecinemaclub.com/sitemap-index.xml

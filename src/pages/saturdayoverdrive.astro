@@ -5,18 +5,27 @@ import MusicPlayer from '../components/MusicPlayer.astro';
 import ShareButtons from '../components/ShareButtons.astro';
 import Band from '../components/Band.astro';
 import { SITE_URL } from '../lib/site';
+import { breadcrumbSchema } from '../lib/schema';
 
 const tvccImgs = [
-  { src: '149dd1_d1fe0033cc404b9a890f9ebddd5c65b7.png', w: 306, h: 194, alt: 'The Vintage Cinema Club Logo' },
-  { src: '149dd1_a7a28d06c9e042b599f219e0f14bb082.jpg', w: 289, h: 194, alt: 'The Vintage Cinema Club' },
+  { src: 'tvcc-schriftzug.png', w: 306, h: 194, alt: 'The Vintage Cinema Club – Schriftzug in Neon über Kinosesseln' },
+  { src: 'tvcc-bandfoto.jpg', w: 289, h: 194, alt: 'The Vintage Cinema Club – Bandfoto im Kinosaal' },
 ];
 ---
-<Base title="Saturday Overdrive at Cafe Carina" path="/saturdayoverdrive" bg="black" ogImage="149dd1_ae985f15ab684ba0a2f0aba9b3b4d6c6.png">
+<Base
+  title="Saturday Overdrive @ Café Carina Wien – 24.10.2026"
+  description="Saturday Overdrive im Café Carina, Josefstädter Straße 84 / U-Bahnbogen 42, 1080 Wien – 24.10.2026, Beginn 20:30: The Vintage Cinema Club, Candid und Anjoana K. live."
+  path="/saturdayoverdrive" bg="black" ogImage="saturday-overdrive-cafe-carina.png"
+  ogImageAlt="Saturday Overdrive @ Café Carina – Plakat mit The Vintage Cinema Club, Candid und Anjoana K."
+  lcpImage={{ src: 'saturday-overdrive-cafe-carina.png', width: 769 }}
+  jsonLd={[breadcrumbSchema([{ name: 'The Vintage Cinema Club', path: '' }, { name: 'Saturday Overdrive @ Café Carina', path: '/saturdayoverdrive' }])]}
+>
   <div id="top"></div>
   <div class="col page">
-    <Img src="149dd1_ae985f15ab684ba0a2f0aba9b3b4d6c6.png" alt="SatOver_atCarina.png" w={769} h={463} class="poster" loading="eager" />
-    <h2 class="claim">for those who still believe in loud guitars</h2>
-    <p class="date">24.10.2026</p>
+    <h1 class="sr-only">Saturday Overdrive @ Café Carina – 24.10.2026</h1>
+    <Img src="saturday-overdrive-cafe-carina.png" alt="Plakat Saturday Overdrive @ Café Carina: drei Effektpedale mit den Namen The Vintage Cinema Club, Candid und Anjoana K." w={769} h={463} class="poster" loading="eager" fetchpriority="high" />
+    <p class="claim">for those who still believe in loud guitars</p>
+    <p class="date"><time datetime="2026-10-24">24.10.2026</time></p>
 
     <div class="info">
       <div class="venue">
@@ -47,10 +56,10 @@ const tvccImgs = [
       <Band name="The Vintage Cinema Club" images={tvccImgs} instagram="http://instagram.com/the_vintage_cinema_club" class="b1">
         <p>ist eine Indie-Rock-Band aus Salzburg/Wien. Zwischen Britpop, Alternative Rock und elektronischen Einflüssen entstehen bei Christian Sieglhuber, Johannes Pann, Lukas Brunner, Steffen Bodis und Sarah May Karger Songs mit Retro-Charme und modernen Klangfarben.</p>
       </Band>
-      <Band name="Candid" images={[{ src: '149dd1_f525db9b183e40cf9f089a898c6b9a01.jpg', w: 595, h: 204, alt: 'Bandpic-CANDID.jpg' }]} instagram="https://www.instagram.com/candidrock1" class="b2">
+      <Band name="Candid" images={[{ src: 'candid-bandfoto.jpg', w: 595, h: 204, alt: 'Candid – Logo und Livefoto' }]} instagram="https://www.instagram.com/candidrock1" class="b2">
         <p>ist ein Rock-Trio aus Wien, das in seiner aktuellen Besetzung seit 2019 mit einer einzigartigen Mischung aus Punk, Pop, Reggae und Rock begeistert. Die Band besteht aus Tim (Lead-Vocals &amp; Gitarre), Noélie (Schlagzeug &amp; Backing-Vocals) und Franz (Bass). Mit energiegeladenen Live-Auftritten und vielseitigen Songs, die von kraftvollen Riffs bis hin zu gefühlvollen Balladen reichen, haben sie sich in die Herzen ihrer Fans gespielt.</p>
       </Band>
-      <Band name="Anjoana K. " images={[{ src: '149dd1_39f559c064fe4b64b25d518ac223acb8.jpg', w: 595, h: 194, alt: 'Bandpic-AnjoanaK.jpg' }]} instagram="https://www.instagram.com/anjoana.k" class="b3">
+      <Band name="Anjoana K. " images={[{ src: 'anjoana-k-bandfoto.jpg', w: 595, h: 194, alt: 'Anjoana K. – Logo und Livefoto' }]} instagram="https://www.instagram.com/anjoana.k" class="b3">
         <p>In ihren kraftvollen Songs bricht die Wiener Künstlerin das Schweigen über mentale Gesundheit mit der ungeschliffenen Energie des Punk-Rock. In einer Welt aus Schweigen und Erwartungen feiert sie die Selbstliebe und gibt dem „Inneren Kind“ eine laute, verzerrte Stimme. Es ist Musik für alle, die Heilung nicht immer als stillen Prozess, sondern als Rebellion gegen das eigene Verstecken verstehen.</p>
       </Band>
     </div>
@@ -66,8 +75,9 @@ const tvccImgs = [
   .venue { width: 310px; margin-left: 190px; text-align: center; font-size: 18px; line-height: 28px; }
   .venue a { text-decoration: none; }
   .venue strong { font-weight: 700; }
-  .sched { margin-left: 42px; font-size: 14px; line-height: 22px; white-space: pre; }
-  .sched .begin { line-height: 31px; }
+  .sched { margin-left: 42px; font-size: 14px; line-height: 22px; }
+  .sched p { white-space: pre; }
+  .sched .begin { line-height: 28px; margin-bottom: 4px; }
   .sched .begin { font-size: 18px; }
   .share-row { margin: 9px 0 0 365px; }
   .player { width: 680px; height: 404px; margin: 22px 0 0 190px; }

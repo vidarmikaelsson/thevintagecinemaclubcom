@@ -6,6 +6,7 @@ import { PAGE_BG, SITE_URL } from '../lib/site';
 
 interface Props {
   title: string;
+  /** meta description – required for every indexable page */
   description?: string;
   /** path without trailing slash, e.g. "/nttb" ("" for home) */
   path: string;
@@ -18,13 +19,23 @@ interface Props {
    */
   bg?: 'fixed' | 'stretch' | 'black' | 'white';
   ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'music.song' | 'music.album' | 'article';
   jsonLd?: object[];
+  /** preload the LCP (largest) image of the page */
+  lcpImage?: { src: string; width: number };
 }
 
-const { title, description, path, noindex = false, bg = 'black', ogImage = '149dd1_53ecf591a655465589904946a836774a.jpg', jsonLd = [] } = Astro.props;
-const canonical = SITE_URL + path;
+const {
+  title, description, path, noindex = false, bg = 'black', ogImage = 'tvcc-bandfoto-2026.jpg',
+  ogImageAlt = 'The Vintage Cinema Club – Bandfoto', ogType = 'website', jsonLd = [], lcpImage,
+} = Astro.props;
+// Pages are emitted as /<page>/index.html, so the served URL ends with a slash.
+const canonical = path ? `${SITE_URL}${path}/` : `${SITE_URL}/`;
 const bgImg = bg === 'fixed' || bg === 'stretch' ? await getImage({ src: media(PAGE_BG), width: 1440, format: 'webp', quality: 80 }) : null;
 const og = await getImage({ src: media(ogImage), width: 1200, format: 'jpg', quality: 82 });
+const ogUrl = new URL(og.src, SITE_URL).href;
+const lcp = lcpImage ? await getImage({ src: media(lcpImage.src), width: lcpImage.width, format: 'webp', quality: 80 }) : null;
 ---
 <!doctype html>
 <html lang="de">
@@ -33,20 +44,32 @@ const og = await getImage({ src: media(ogImage), width: 1200, format: 'jpg', qua
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
-    {noindex && <meta name="robots" content="noindex" />}
-    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+    {path !== '/404' && <link rel="canonical" href={canonical} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#2a1a5e" />
+    <meta name="author" content="The Vintage Cinema Club" />
+
+    <!-- Open Graph / social previews -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="The Vintage Cinema Club" />
+    <meta property="og:locale" content="de_AT" />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content="The Vintage Cinema Club" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content={new URL(og.src, SITE_URL).href} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content={String(og.attributes.width ?? 1200)} />
+    <meta property="og:image:height" content={String(og.attributes.height ?? '')} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
     <link rel="preload" href="/fonts/tvcc-display.woff2" as="font" type="font/woff2" crossorigin />
+    {lcp && <link rel="preload" as="image" href={lcp.src} fetchpriority="high" />}
     {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
     <slot name="head" />
   </head>
@@ -55,7 +78,8 @@ const og = await getImage({ src: media(ogImage), width: 1200, format: 'jpg', qua
     <main id="main">
       <slot />
     </main>
-    <a href="#top" class="to-top" aria-label="Nach oben" data-to-top>
+    <slot name="footer" />
+    <a href="#top" class="to-top" aria-label="Nach oben" title="Nach oben" data-to-top>
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 15l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
     <script>
@@ -78,7 +102,7 @@ const og = await getImage({ src: media(ogImage), width: 1200, format: 'jpg', qua
   body.bg-stretch main { background: #000 var(--page-bg) center top / 100% 100% no-repeat; }
   main { position: relative; display: block; }
 
-  /* Mobile "back to top" button (as on the Wix mobile site) */
+  /* Mobile "back to top" button (as on the original mobile site) */
   .to-top { position: fixed; right: 16px; bottom: 20px; z-index: 50; display: none; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #000; color: #fff; border: 1.5px solid #fff; opacity: 0; transition: opacity .25s; }
   .to-top.show { opacity: .9; }
   @media (max-width: 760px) { .to-top { display: grid; } .to-top:not(.show) { pointer-events: none; } }

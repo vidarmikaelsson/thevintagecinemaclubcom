@@ -5,39 +5,49 @@ import IconRow from '../components/IconRow.astro';
 import MusicPlayer from '../components/MusicPlayer.astro';
 import VideoGallery from '../components/VideoGallery.astro';
 import LiveGallery from '../components/LiveGallery.astro';
+import { getImage } from 'astro:assets';
+import { media } from '../lib/media';
 import { LISTEN_ICONS, FOOTER_ICONS, MAIL, BOOKING_MAIL, SITE_URL } from '../lib/site';
+import { bandSchema, websiteSchema, videoListSchema } from '../lib/schema';
 
 const gigs = [
-  { date: '26.09.2026', venue: 'Rock Aid - Bürmoos', href: 'https://www.facebook.com/profile.php?id=61592576111446' },
-  { date: '24.10.2026', venue: 'Cafe Carina - Wien', href: 'https://www.cafe-carina.at' },
-  { date: '06.11.2026', venue: 'Rockhouse - Salzburg', href: 'https://www.rockhouse.at' },
+  { date: '26.09.2026', iso: '2026-09-26', venue: 'Rock Aid - Bürmoos', href: 'https://www.facebook.com/profile.php?id=61592576111446' },
+  { date: '24.10.2026', iso: '2026-10-24', venue: 'Cafe Carina - Wien', href: 'https://www.cafe-carina.at' },
+  { date: '06.11.2026', iso: '2026-11-06', venue: 'Rockhouse - Salzburg', href: 'https://www.rockhouse.at' },
 ];
 
 const videos = [
-  { title: 'The_vintage_cinema_club_-_Next_to_the_body', src: '/video/next-to-the-body.mp4', poster: 'fb29f0_3e3b149f115246cf880c0cf040f6eb3c.jpg', duration: '04:09' },
-  { title: 'THE BEAT WITH THE RHYTHM', src: '/video/the-beat-with-the-rhythm.mp4', poster: 'fb29f0_65255b59079e4115b96a2dd3ef1534b2.jpg', duration: '05:22' },
-  { title: '19_9', src: '/video/19-9.mp4', poster: 'fb29f0_bee27a702e4746619ba59ff84fc6f79a.jpg', duration: '03:49' },
+  // title = label shown in the gallery (as on the original); name/uploadDate/iso duration = original video metadata
+  { title: 'The_vintage_cinema_club_-_Next_to_the_body', name: 'Next to the Body', src: '/video/next-to-the-body.mp4', poster: 'video-next-to-the-body.jpg', duration: '04:09', iso: 'PT4M9S', uploadDate: '2024-02-25T17:21:55Z' },
+  { title: 'THE BEAT WITH THE RHYTHM', name: 'The Beat With The Rhythm', src: '/video/the-beat-with-the-rhythm.mp4', poster: 'video-the-beat-with-the-rhythm.jpg', duration: '05:22', iso: 'PT5M22S', uploadDate: '2024-01-03T19:31:32Z' },
+  { title: '19_9', name: '19_9', src: '/video/19-9.mp4', poster: 'video-19-9.jpg', duration: '03:49', iso: 'PT3M49S', uploadDate: '2024-01-03T21:05:36Z' },
 ];
 
-const liveAlt = 'The Vintage Cinema Club live in Salzburg – Indie-Rock-Band';
 const live = [
-  '149dd1_4533dbb2f1aa4f5099422674e745db20.jpg', '149dd1_3cccdb7660694f718832b0cf73c80170.jpg', '149dd1_0fd10c6597264a94aef28d9a86c69925.jpg',
-  '149dd1_a1ba18645acd41e1841378acc9c1d727.jpg', '149dd1_677941c7feff4389a38b1f00eed9ebfd.jpg', '149dd1_2a6437c9c7af4970ab7863718683c8a4.jpg',
-  '149dd1_5d9929fdf5834e699a46763ecf0a3a97.jpg', '149dd1_2fc308ed5601483baf32d60a5d97354b.jpg', '149dd1_d0ec196f680042fda1733684cd9425b3.jpg',
-  '149dd1_553ccb2e6b024e24b2ab7a4efeab6c42.jpg', '149dd1_a51b476d56064ae190c922cc22b38714.jpg', '149dd1_f50102423a034a49a729a55fa4101718.jpg',
-  '149dd1_abfd9a311d3b436a91e386a21ed1ccef.jpg', '149dd1_5529dfc518c2408eb464a134737238d9.jpg', '149dd1_7309300d95aa427eac2619b0d74f1645.jpg',
-  '149dd1_1188115e5ff643e79fa2068f95b74319.jpg', '149dd1_af3bd3a7892e49dbbc3a476fdccbb215.jpg', '149dd1_44cfc5c3df804d8899dfacb1b3b1f75f.jpg',
-  '149dd1_d7a41372ef0940e7a34c0c2bb231ae59.jpg', '149dd1_167c405ee37d4ed7b96201795c83ad80.jpg', '149dd1_0d8088497e934e0fb2256ab0fc24382e.jpg',
-  '149dd1_10417778bcdd4ed0a4ca8a0f9e1fa9ec.jpg', '149dd1_dda6df0bd4e24b4db5858982614b18bf.jpg', '149dd1_9f2933f3013f4d99aedee5a5bd67fa74.jpg',
-  '149dd1_5c356760bfe94fe2876aa4c7fee7e302.jpg',
-].map((src, i) => ({ src, alt: i >= 23 ? liveAlt : '' }));
+  'tvcc-live-01.jpg', 'tvcc-live-02.jpg', 'tvcc-live-03.jpg',
+  'tvcc-live-04.jpg', 'tvcc-live-05.jpg', 'tvcc-live-06.jpg',
+  'tvcc-live-07.jpg', 'tvcc-live-08.jpg', 'tvcc-live-09.jpg',
+  'tvcc-live-10.jpg', 'tvcc-live-11.jpg', 'tvcc-live-12.jpg',
+  'tvcc-live-13.jpg', 'tvcc-live-14.jpg', 'tvcc-live-15.jpg',
+  'tvcc-live-16.jpg', 'tvcc-live-17.jpg', 'tvcc-live-18.jpg',
+  'tvcc-live-19.jpg', 'tvcc-live-20.jpg', 'tvcc-live-21.jpg',
+  'tvcc-live-22.jpg', 'tvcc-live-23.jpg', 'tvcc-live-24.jpg',
+  'tvcc-live-25.jpg',
+].map((src, i, all) => ({ src, alt: `The Vintage Cinema Club live – Konzertfoto ${i + 1} von ${all.length}` }));
 
 const pink = { bg: 'rgb(219,56,183)', text: '#fff', control: '#000', divider: '#000', active: '#000', font: 'var(--f-display)', sizes: [20, 16, 20, 12] as [number, number, number, number] };
 
+// absolute image URLs for structured data
+const img = async (name: string, width: number) => (await getImage({ src: media(name), width, format: 'jpg', quality: 82 })).src;
+const thumbs = await Promise.all(videos.map((v) => img(v.poster, 1280)));
 const jsonLd = [
-  { '@context': 'https://schema.org/', '@type': 'LocalBusiness', name: 'The Vintage Cinema Club', url: SITE_URL, address: { '@type': 'PostalAddress', addressCountry: 'AT', addressLocality: 'Salzburg' } },
-  { '@context': 'https://schema.org/', '@type': 'WebSite', name: 'The Vintage Cinema Club', url: SITE_URL },
-  { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: videos.map((v, i) => ({ '@type': 'VideoObject', name: v.title, description: v.title, contentUrl: SITE_URL + v.src, position: i + 1 })) },
+  websiteSchema(),
+  bandSchema({
+    image: await img('tvcc-bandfoto-2026.jpg', 1200),
+    fashionCover: await img('fashion-album-cover.jpg', 358),
+    nttbCover: await img('next-to-the-body-cover.jpg', 1200),
+  }),
+  videoListSchema(videos.map((v, i) => ({ title: v.title, name: v.name, src: v.src, thumb: thumbs[i], uploadDate: v.uploadDate, duration: v.iso }))),
 ];
 ---
 <Base
@@ -46,13 +56,15 @@ const jsonLd = [
   path=""
   bg="fixed"
   jsonLd={jsonLd}
+  ogImageAlt="The Vintage Cinema Club – Bandfoto 2026 im Kinosaal"
+  lcpImage={{ src: 'tvcc-bandfoto-2026.jpg', width: 980 }}
 >
   <div id="top"></div>
 
   <!-- Band photo -->
   <section class="s-hero">
     <div class="col">
-      <Img src="149dd1_53ecf591a655465589904946a836774a.jpg" alt="TVCC_Bandfoto_2026_dirty_neu.jpg" w={980} h={654} loading="eager" class="hero-img" />
+      <Img src="tvcc-bandfoto-2026.jpg" alt="The Vintage Cinema Club – Bandfoto 2026: die fünf Bandmitglieder in einem Kinosaal, darüber der Schriftzug THE VINTAGE CINEMA CLUB" w={980} h={654} loading="eager" fetchpriority="high" class="hero-img" />
     </div>
   </section>
 
@@ -60,15 +72,15 @@ const jsonLd = [
   <section class="s-intro">
     <div class="col">
       <h1 class="intro-title pink">The Vintage Cinema Club</h1>
-      <h6 class="intro-sub">ist eine Indie-Rock-Band aus Salzburg/Wien, Österreich. </h6>
-      <h6 class="intro-sub">Der Sound verbindet britpop-inspirierte Gitarren mit Retro-Ästhetik &amp; elektronischen Elementen.</h6>
+      <p class="intro-sub">ist eine Indie-Rock-Band aus Salzburg/Wien, Österreich. </p>
+      <p class="intro-sub">Der Sound verbindet britpop-inspirierte Gitarren mit Retro-Ästhetik &amp; elektronischen Elementen.</p>
 
       <div class="gigs">
-        <h3 class="gigs-label pink">Gigs:</h3>
+        <h2 class="gigs-label pink">Gigs:</h2>
         <ul class="gigs-list">
           {gigs.map((g) => (
             <li>
-              <p class="gig-date pink">{g.date}</p>
+              <p class="gig-date pink"><time datetime={g.iso}>{g.date}</time></p>
               <p class="gig-venue"><a class="pink" href={g.href} target="_blank" rel="noreferrer noopener">{g.venue}</a></p>
             </li>
           ))}
@@ -84,10 +96,10 @@ const jsonLd = [
   <!-- Release promo, listen links, live video -->
   <section class="s-release">
     <div class="col">
-      <a href="/nttb" class="release-link" aria-label="Next to the Body – mehr Infos">
-        <Img src="149dd1_57772d4e57a0489f973fe4e42ec9eb11.png" alt="NTTB_SM_Release4.png" w={549} h={664} />
+      <a href="/nttb/" class="release-link">
+        <Img src="next-to-the-body-out-now.png" alt="The Vintage Cinema Club – Next to the Body: Out now, jetzt überall erhältlich auf Spotify, Apple Music, YouTube und Amazon Music. Mehr Infos & Links: thevintagecinemaclub.com/nttb. Live at Rockhouse Salzburg 2025" w={549} h={664} />
       </a>
-      <h6 class="listen pink">Jetzt anhören:</h6>
+      <p class="listen pink">Jetzt anhören:</p>
       <IconRow items={LISTEN_ICONS} class="listen-icons" />
       <div class="yt">
         <iframe
@@ -103,7 +115,7 @@ const jsonLd = [
   </section>
 
   <!-- Bio -->
-  <section class="s-bio">
+  <section class="s-bio" aria-label="Über die Band">
     <div class="col bio">
       <p>Eines kann man der Band nicht absprechen : </p>
       <p>Konsequenz .<br />Wenn Vintage, dann richtig. Ganz oder gar nicht.<br />Vintage Style ist alles. Alles ist Vintage-Style .<br /></p>
@@ -115,10 +127,10 @@ const jsonLd = [
   </section>
 
   <!-- Music -->
-  <section class="s-music" id="music">
+  <section class="s-music" id="music" aria-labelledby="music-h">
     <div class="col">
-      <h1 class="music-title pink">Music</h1>
-      <h1 class="sub-title">Audio</h1>
+      <h2 class="music-title pink" id="music-h">Music</h2>
+      <h3 class="sub-title">Audio</h3>
       <div class="players">
         <MusicPlayer album="selection" variant="card" width={350} height={688} theme={pink} autoplay shareLabel="Share Playlist" shareUrl={SITE_URL} />
         <MusicPlayer album="fashion" variant="card" width={350} height={695} theme={pink} shareLabel="Share Album" getAlbumUrl="https://open.spotify.com/intl-de/artist/0OjzsnJLcRhDj3YnZfU2Iz?si=gpwvbKRlTlms_ngyvQSirQ" shareUrl={SITE_URL} />
@@ -127,32 +139,32 @@ const jsonLd = [
       <div class="vinyl">
         <div class="vinyl-text">
           <h4 class="vinyl-name">Fashion</h4>
-          <h5 class="vinyl-offer pink">als vinyl<br />erhältlich<br />für 25€</h5>
+          <p class="vinyl-offer pink">als vinyl<br />erhältlich<br />für 25€</p>
         </div>
-        <h6 class="vinyl-mail"><a href={`mailto:${MAIL}`}>{MAIL}</a></h6>
+        <p class="vinyl-mail"><a href={`mailto:${MAIL}`}>{MAIL}</a></p>
         <a class="vinyl-cover" href={`mailto:${MAIL}`} aria-label="Vinyl „Fashion“ per E-Mail bestellen">
-          <Img src="149dd1_ff2b8e53751640be89767adb19ea7af5.jpg" alt="Fashion – Vinyl" w={276} h={276} />
+          <Img src="fashion-album-cover.jpg" alt="Albumcover „Fashion“ von The Vintage Cinema Club" w={276} h={276} />
         </a>
       </div>
 
-      <h1 class="sub-title video-title">Video</h1>
+      <h3 class="sub-title video-title">Video</h3>
       <VideoGallery videos={videos} shareUrl={SITE_URL} />
     </div>
   </section>
 
   <!-- Live & Loud -->
-  <section class="s-live">
-    <h2 class="live-title pink">Live &amp; Loud</h2>
+  <section class="s-live" aria-labelledby="live-h">
+    <h2 class="live-title pink" id="live-h">Live &amp; Loud</h2>
     <LiveGallery images={live} />
   </section>
 
   <!-- Footer -->
-  <footer class="s-footer">
+  <footer class="s-footer" slot="footer">
     <div class="col">
       <p class="f-name pink">The Vintage Cinema Club</p>
       <p class="f-mail"><a href={`mailto:${MAIL}`}>{MAIL}</a></p>
       <IconRow items={FOOTER_ICONS} variant="white" class="f-icons" />
-      <p class="f-copy">©2026 von The Vintage Cinema Club. Erstellt mit Wix.com</p>
+      <p class="f-copy">©2026 von The Vintage Cinema Club.</p>
     </div>
   </footer>
 </Base>

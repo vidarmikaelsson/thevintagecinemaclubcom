@@ -1,6 +1,6 @@
 ---
 /**
- * Replacement for the Wix Video "All Videos" channel widget (classic layout):
+ * Video channel gallery ("All Videos"), visually matching the original site:
  * large player with poster + "Video abspielen" button, thumbnail strip below.
  * Videos are self-hosted MP4s in /public/video.
  */
@@ -8,7 +8,7 @@ import { getImage } from 'astro:assets';
 import Img from './Img.astro';
 import { media } from '../lib/media';
 
-interface Video { title: string; src: string; poster: string; duration: string }
+interface Video { title: string; name?: string; src: string; poster: string; duration: string }
 interface Props { title?: string; videos: Video[]; shareUrl: string }
 const { title = 'All Videos', videos, shareUrl } = Astro.props;
 const posters = await Promise.all(videos.map((v) => getImage({ src: media(v.poster), width: 1880, format: 'webp', quality: 78 })));
@@ -16,7 +16,7 @@ const first = videos[0];
 ---
 <section class="vg" aria-label={`"${title}" Widget für Kanalvideos`} data-vg data-share-url={shareUrl}>
   <header class="vg-head">
-    <h2 class="vg-title">{title}</h2>
+    <p class="vg-title">{title}</p>
     <button class="vg-ic" type="button" data-vg-share aria-label="Teilen">
       <svg viewBox="0 0 24 24"><circle cx="17" cy="6" r="2"/><circle cx="7" cy="12" r="2"/><circle cx="17" cy="18" r="2"/><path d="M8.8 11l6.4-3.7M8.8 13l6.4 3.7" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
     </button>
@@ -33,14 +33,14 @@ const first = videos[0];
   </header>
 
   <div class="vg-stage">
-    <img class="vg-poster" src={posters[0].src} alt={title} width="940" height="529" loading="lazy" decoding="async" data-vg-poster />
+    <img class="vg-poster" src={posters[0].src} alt={`Video: ${first.name ?? first.title} – The Vintage Cinema Club`} width="940" height="529" loading="lazy" decoding="async" data-vg-poster />
     <video class="vg-video" controls playsinline preload="none" hidden data-vg-video></video>
     <button class="vg-play" type="button" data-vg-play>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>
       Video abspielen
     </button>
     <div class="vg-info" data-vg-infobox hidden>
-      <h3 data-vg-infotitle>{first.title}</h3>
+      <p class="vg-info-title" data-vg-infotitle>{first.title}</p>
       <p>Dauer <span data-vg-infodur>{first.duration}</span></p>
     </div>
   </div>
@@ -48,10 +48,10 @@ const first = videos[0];
   <ul class="vg-strip">
     {videos.map((v, i) => (
       <li>
-        <button class="vg-thumb" type="button" data-vg-item={i} data-src={v.src} data-poster={posters[i].src} data-title={v.title} data-duration={v.duration} aria-label={`${v.title} abspielen`}>
-          <Img src={v.poster} alt={v.title} w={220} h={128} />
+        <button class="vg-thumb" type="button" data-vg-item={i} data-src={v.src} data-poster={posters[i].src} data-title={v.title} data-duration={v.duration} aria-label={`Video abspielen: ${v.name ?? v.title}`}>
+          <Img src={v.poster} alt={`Video: ${v.name ?? v.title} – The Vintage Cinema Club`} w={220} h={128} />
           <span class="vg-thumb-over">
-            <h3>{v.title}</h3>
+            <span class="vg-thumb-title">{v.title}</span>
             <span class="vg-thumb-dur" aria-label={`Dauer ${v.duration}`}>{v.duration}</span>
             <svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="27" fill="rgba(0,0,0,.35)" stroke="#fff" stroke-width="1.5"/><path d="M23 18.5v19l15-9.5z" fill="#fff"/></svg>
           </span>
@@ -81,14 +81,14 @@ const first = videos[0];
   .vg.is-playing .vg-play, .vg.is-playing .vg-poster { display: none; }
   .vg-info { position: absolute; inset: 0; background: rgba(0,0,0,.8); padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; text-align: center; color: #fff; }
   .vg-info[hidden] { display: none; }
-  .vg-info h3 { font-size: 28px; }
+  .vg-info-title { font-size: 28px; }
 
   .vg-strip { list-style: none; margin: 49px 0 0; padding: 4px; display: flex; flex-wrap: wrap; gap: 10px; }
   .vg-thumb { position: relative; display: block; width: 224px; height: 132px; padding: 2px; }
   .vg-thumb img { width: 220px; height: 128px; }
   .vg-thumb.is-active { outline: 2px solid var(--pink); outline-offset: -2px; }
   .vg-thumb-over { position: absolute; inset: 2px; padding: 10px 14px; color: #fff; text-align: left; background: rgba(0,0,0,.45); opacity: 0; transition: opacity .2s; }
-  .vg-thumb-over h3 { font-size: 14px; line-height: 19px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-all; }
+  .vg-thumb-title { font-size: 14px; line-height: 19px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-all; }
   .vg-thumb-dur { position: absolute; left: 14px; bottom: 8px; font-size: 12px; }
   .vg-thumb-over svg { position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; transform: translate(-50%, -40%); }
   .vg-thumb:hover .vg-thumb-over, .vg-thumb:focus-visible .vg-thumb-over { opacity: 1; }
@@ -101,7 +101,7 @@ const first = videos[0];
     .vg-thumb { width: 164px; height: 96px; }
     .vg-thumb img { width: 160px; height: 92px; }
     .vg-thumb-over { opacity: 1; background: rgba(0,0,0,.25); }
-    .vg-thumb-over h3 { display: none; }
+    .vg-thumb-title { display: none !important; }
   }
 </style>
 

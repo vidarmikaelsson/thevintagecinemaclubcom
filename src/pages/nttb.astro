@@ -5,16 +5,24 @@ import IconRow from '../components/IconRow.astro';
 import MusicPlayer from '../components/MusicPlayer.astro';
 import VideoBox from '../components/VideoBox.astro';
 import { LISTEN_ICONS, SITE_URL } from '../lib/site';
+import { breadcrumbSchema } from '../lib/schema';
 ---
-<Base title="The Vintage Cinema Club - Next to the Body (Live)" path="/nttb" noindex bg="stretch" ogImage="149dd1_8cd6b85938914e45916dcd8be443ffd2.jpg">
+<Base
+  title="Next to the Body (Live) – neue Single | The Vintage Cinema Club"
+  description="„Next to the Body“ (Live) – neue Single von The Vintage Cinema Club, Veröffentlichung am 10.07.2026. Live aufgenommen im Rockhouse Salzburg am 12.12.2025. Jetzt anhören."
+  path="/nttb" noindex bg="stretch" ogImage="next-to-the-body-cover.jpg"
+  ogImageAlt="Cover der Single „Next to the Body“ (Live) von The Vintage Cinema Club"
+  lcpImage={{ src: 'next-to-the-body-cover.jpg', width: 594 }}
+  jsonLd={[breadcrumbSchema([{ name: 'The Vintage Cinema Club', path: '' }, { name: 'Next to the Body (Live)', path: '/nttb' }])]}
+>
   <div id="top"></div>
   <div class="col page">
-    <h2 class="brand pink">THE VINTAGE CINEMA CLUB</h2>
-    <h5 class="headline"><span class="hl-big">New Single</span><br /><span class="pink">Veröffentlichung am 10.07.2026</span></h5>
+    <p class="brand pink">THE VINTAGE CINEMA CLUB</p>
+    <h1 class="headline"><span class="hl-big">New Single<span class="sr-only"> „Next to the Body“ (Live) von The Vintage Cinema Club</span></span><br /><span class="pink">Veröffentlichung am <time datetime="2026-07-10">10.07.2026</time></span></h1>
 
     <div class="shift">
-      <Img src="149dd1_8cd6b85938914e45916dcd8be443ffd2.jpg" alt="NTTB_cover.jpg" w={594} h={596} class="cover" loading="eager" />
-      <VideoBox src="/video/nttb-live-rockhouse.mp4" poster="149dd1_180a6d57f6e04963bcac8e840ceb1449f000.jpg" width={594} height={335} class="live" label="Next to the Body – live im Rockhouse Salzburg abspielen" />
+      <Img src="next-to-the-body-cover.jpg" alt="Cover der Single „Next to the Body“ von The Vintage Cinema Club – Bushaltestelle an einer nebligen Waldstraße, Live at Rockhouse Salzburg 2025" fetchpriority="high" w={594} h={596} class="cover" loading="eager" />
+      <VideoBox src="/video/nttb-live-rockhouse.mp4" poster="next-to-the-body-live-rockhouse.jpg" width={594} height={335} class="live" label="Next to the Body – live im Rockhouse Salzburg abspielen" />
     </div>
     <div class="player">
       <MusicPlayer
@@ -25,16 +33,16 @@ import { LISTEN_ICONS, SITE_URL } from '../lib/site';
     </div>
 
     <div class="story">
-      <h6>„Next to the Body“ begleitet uns schon seit Jahren auf der Bühne, lange bevor wir uns entschieden haben, den Song zu veröffentlichen.</h6>
-      <h6>Live aufgenommen im Rockhouse Salzburg am 12.12.2025. Die Version zeigt den Song genau so, wie wir ihn live spielen: etwas schneller, direkter und mit der Energie eines Konzertabends.</h6>
-      <h6>Eine Studiofassung ist bereits in Planung. Für den Moment wollten wir jedoch genau diesen Augenblick festhalten und den Song so veröffentlichen, wie er an diesem Abend geklungen hat.</h6>
-      <h6><br /></h6>
-      <h6>The Vintage Cinema Club</h6>
+      <p>„Next to the Body“ begleitet uns schon seit Jahren auf der Bühne, lange bevor wir uns entschieden haben, den Song zu veröffentlichen.</p>
+      <p>Live aufgenommen im Rockhouse Salzburg am <time datetime="2025-12-12">12.12.2025</time>. Die Version zeigt den Song genau so, wie wir ihn live spielen: etwas schneller, direkter und mit der Energie eines Konzertabends.</p>
+      <p>Eine Studiofassung ist bereits in Planung. Für den Moment wollten wir jedoch genau diesen Augenblick festhalten und den Song so veröffentlichen, wie er an diesem Abend geklungen hat.</p>
+      <p><br /></p>
+      <p>The Vintage Cinema Club</p>
     </div>
 
-    <h6 class="listen pink">Jetzt anhören:</h6>
+    <p class="listen pink">Jetzt anhören:</p>
     <IconRow items={LISTEN_ICONS} class="icons" />
-    <h5 class="home-link"><a href="/" target="_blank">zur Hauptseite<br />www.thevintagecinemaclub.com</a></h5>
+    <p class="home-link"><a href="/" target="_blank">zur Hauptseite<br />www.thevintagecinemaclub.com</a></p>
   </div>
 </Base>
 

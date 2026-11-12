@@ -6,17 +6,26 @@ import ShareButtons from '../components/ShareButtons.astro';
 import Band from '../components/Band.astro';
 import SocialIcon from '../components/SocialIcon.astro';
 import { SITE_URL } from '../lib/site';
+import { breadcrumbSchema } from '../lib/schema';
 
 const maps = 'https://maps.app.goo.gl/4HbCXkAwU61xtJJG9';
 const tickets = 'https://ntry.at/g5indienight';
 // ntry.at ticket-shop widget (originally a Wix "HTML embed")
 const ntry = '<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}</style></head><body><script src="https://ntry.at/iframe/g5indienight.js?l=de"></script></body></html>';
 ---
-<Base title="G5 Indie Night" path="/g5-indie-night" bg="black" ogImage="149dd1_6308e8fa0e42451c9c3159c1ccdd0c0c.png">
+<Base
+  title="G5 Indie Night – G5 Live Music Bar Wien"
+  description="G5 Indie Night in der G5 Live Music Bar, Heiligenstädter Straße 31, 1190 Wien – mit Marbelite, Roses and Tulips und The Vintage Cinema Club. Doors 20:00, Beginn 20:30."
+  path="/g5-indie-night" bg="black" ogImage="g5-indie-night-logo.png"
+  ogImageAlt="G5 Indie Night – Logo"
+  lcpImage={{ src: 'g5-indie-night-logo.png', width: 762 }}
+  jsonLd={[breadcrumbSchema([{ name: 'The Vintage Cinema Club', path: '' }, { name: 'G5 Indie Night', path: '/g5-indie-night' }])]}
+>
   <div id="top"></div>
   <div class="col page">
-    <Img src="149dd1_6308e8fa0e42451c9c3159c1ccdd0c0c.png" alt="G5 Indie Night" w={762} h={417} class="logo" loading="eager" />
-    <h2 class="claim">for those who still believe in bands</h2>
+    <h1 class="sr-only">G5 Indie Night</h1>
+    <Img src="g5-indie-night-logo.png" alt="G5 Indie Night – Logo" w={762} h={417} class="logo" loading="eager" fetchpriority="high" />
+    <p class="claim">for those who still believe in bands</p>
 
     <p class="addr">
       <a href={maps} target="_blank" rel="noreferrer noopener"><strong>G5 Live Music Bar</strong><br />Heiligenstädter Straße 31<br />1190 Wien<br />Doors 20:00<br />Beginn 20:30</a>
@@ -24,11 +33,11 @@ const ntry = '<!doctype html><html><head><meta charset="utf-8"><style>html,body{
 
     <div class="row">
       <div class="tix">
-        <h2><a href={tickets} target="_blank" rel="noreferrer noopener"><span class="lbl">Tickets:  </span>VVK: Early Bird 8€ / <span class="s15">10€</span></a></h2>
-        <h2 class="evening"><a href={tickets} target="_blank" rel="noreferrer noopener">Abend: 12€</a></h2>
+        <p><a href={tickets} target="_blank" rel="noopener"><span class="lbl">Tickets:  </span>VVK: Early Bird 8€ / <span class="s15">10€</span></a></p>
+        <p class="evening"><a href={tickets} target="_blank" rel="noopener">Abend: 12€</a></p>
       </div>
       <a class="ntry" href={tickets} target="_blank" rel="noreferrer noopener" aria-label="Tickets auf ntry.at">
-        <Img src="149dd1_0e171193020f455e814d3e9292012f06.png" alt="ntry.png" w={46} h={46} />
+        <Img src="ntry-logo.png" alt="ntry – Tickets kaufen" w={46} h={46} />
       </a>
       <div class="share"><ShareButtons path="/g5-indie-night" labelColor="var(--wine)" /></div>
     </div>
@@ -42,23 +51,23 @@ const ntry = '<!doctype html><html><head><meta charset="utf-8"><style>html,body{
     </div>
 
     <div class="bands">
-      <p class="bands-h">Die Bands:</p>
+      <h2 class="bands-h">Die Bands:</h2>
 
       <article class="marbelite">
-        <p class="name">Marbelite</p>
-        <Img src="149dd1_adc613cc3c8e406b967618b6a81fb2f2.jpg" alt="Marbelite Logo" w={200} h={200} class="m-logo" />
-        <Img src="149dd1_f4b428cceeab44f29f837a35a2309b93.jpg" alt="Marbelite" w={214} h={322} class="m-photo" />
+        <h3 class="name">Marbelite</h3>
+        <Img src="marbelite-logo.jpg" alt="Marbelite – Logo" w={200} h={200} class="m-logo" />
+        <Img src="marbelite-bandfoto.jpg" alt="Marbelite – Bandfoto" w={214} h={322} class="m-photo" />
         <p class="desc">ist eine Wiener Indie-Band, die mit mitreißenden Lyrics und einem Mix verschiedenster Musikeinflüsse einen einzigartigen Sound schafft. Amanda, Celine, Christian, Karo und Sascha sorgen mit viel Energie und echten, rohen Emotionen für eine gute Stimmung.</p>
         <a class="ig" href="https://www.instagram.com/marbelite_music" target="_blank" rel="noreferrer noopener" aria-label="Marbelite auf Instagram">
           <SocialIcon name="instagram" variant="grey" size={39} />
         </a>
       </article>
 
-      <Band name="Roses and Tulips" images={[{ src: '149dd1_09ff20286b5547c29c7aea67b1a46113.png', w: 156, h: 200, alt: 'RuT_Logo_invert.png' }, { src: '149dd1_ad05e363a8a24a368ab7d94311286508.jpg', w: 350, h: 200, alt: 'Roses and Tulips' }]} instagram="https://www.instagram.com/roses8tulips" class="b-rut">
+      <Band level="h3" name="Roses and Tulips" images={[{ src: 'roses-and-tulips-logo.png', w: 156, h: 200, alt: 'Roses and Tulips – Logo' }, { src: 'roses-and-tulips-bandfoto.jpg', w: 350, h: 200, alt: 'Roses and Tulips – Bandfoto' }]} instagram="https://www.instagram.com/roses8tulips" class="b-rut">
         <p>ist ein Psychedelic Indie Rock Trio. Mit Einflüssen aus Dream-Pop und Shoegaze verbindet die Musik von Valentin Neulinger, Lorenz Seifert und Niki Mondl atmosphärische Instrumentals mit bildhaften Texten.</p>
       </Band>
 
-      <Band name="The Vintage Cinema Club" images={[{ src: '149dd1_d1fe0033cc404b9a890f9ebddd5c65b7.png', w: 306, h: 194, alt: 'The Vintage Cinema Club Logo' }, { src: '149dd1_a7a28d06c9e042b599f219e0f14bb082.jpg', w: 289, h: 194, alt: 'The Vintage Cinema Club' }]} instagram="http://instagram.com/the_vintage_cinema_club" class="b-tvcc">
+      <Band level="h3" name="The Vintage Cinema Club" images={[{ src: 'tvcc-schriftzug.png', w: 306, h: 194, alt: 'The Vintage Cinema Club – Schriftzug in Neon über Kinosesseln' }, { src: 'tvcc-bandfoto.jpg', w: 289, h: 194, alt: 'The Vintage Cinema Club – Bandfoto im Kinosaal' }]} instagram="http://instagram.com/the_vintage_cinema_club" class="b-tvcc">
         <p>ist eine Indie-Rock-Band aus Salzburg/Wien. Zwischen Britpop, Alternative Rock und elektronischen Einflüssen entstehen bei Christian Sieglhuber, Johannes Pann, Lukas Brunner, Steffen Bodis und Sarah May Karger Songs mit Retro-Charme und modernen Klangfarben.</p>
       </Band>
     </div>
@@ -76,7 +85,7 @@ const ntry = '<!doctype html><html><head><meta charset="utf-8"><style>html,body{
   .addr strong { font-weight: 700; }
   .row { position: relative; height: 46px; margin-top: 30px; }
   .tix { position: absolute; left: 187px; top: 2px; font-size: 16px; letter-spacing: .01em; color: #fff; }
-  .tix h2 { font-size: 16px; line-height: normal; }
+  .tix p { font-size: 16px; line-height: normal; }
   .tix a { text-decoration: none; }
   .tix .lbl { color: var(--wine); }
   .tix .s15, .tix .evening { font-size: 15px; }

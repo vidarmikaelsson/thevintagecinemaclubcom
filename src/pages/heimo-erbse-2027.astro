@@ -3,14 +3,21 @@ import Base from '../layouts/Base.astro';
 import Img from '../components/Img.astro';
 import MusicPlayer from '../components/MusicPlayer.astro';
 import { SITE_URL } from '../lib/site';
+import { breadcrumbSchema } from '../lib/schema';
 ---
-<Base title="Heimo Erbse Preis 2027 | The Vintage Cinema Club" path="/heimo-erbse-2027" noindex bg="stretch" ogImage="149dd1_a7a28d06c9e042b599f219e0f14bb082.jpg">
+<Base
+  title="Heimo Erbse Preis 2027 | The Vintage Cinema Club"
+  description="Einreichung von The Vintage Cinema Club zum Heimo Erbse Preis 2027: eingereichte Live-Songs aus dem Rockhouse Salzburg, Biografie der Band und geplante Verwendung der Fördermittel."
+  path="/heimo-erbse-2027" noindex bg="stretch" ogImage="tvcc-bandfoto.jpg"
+  ogImageAlt="The Vintage Cinema Club – Bandfoto im Kinosaal"
+  jsonLd={[breadcrumbSchema([{ name: 'The Vintage Cinema Club', path: '' }, { name: 'Heimo Erbse Preis 2027', path: '/heimo-erbse-2027' }])]}
+>
   <div id="top"></div>
   <div class="col page">
-    <h2 class="brand pink">THE VINTAGE CINEMA CLUB</h2>
-    <h3 class="title">Heimo Erbse Preis 2027</h3>
-    <Img src="149dd1_a7a28d06c9e042b599f219e0f14bb082.jpg" alt="The Vintage Cinema Club – Bandfoto" w={600} h={399} class="photo" loading="eager" />
-    <h5 class="tag pink">Salzburg · Indie · Alternative</h5>
+    <p class="brand pink">THE VINTAGE CINEMA CLUB</p>
+    <h1 class="title">Heimo Erbse Preis 2027</h1>
+    <Img src="tvcc-bandfoto.jpg" alt="The Vintage Cinema Club – Bandfoto: die fünf Bandmitglieder in einem Kinosaal" w={600} h={399} class="photo" loading="eager" />
+    <p class="tag pink">Salzburg · Indie · Alternative</p>
 
     <div class="player">
       <MusicPlayer
@@ -20,7 +27,7 @@ import { SITE_URL } from '../lib/site';
       />
     </div>
 
-    <h5 class="h pink">Eingereichte Songs</h5>
+    <h2 class="h pink">Eingereichte Songs</h2>
     <div class="txt">
       <p>Die eingereichten Songs stammen aus einer Live-Session, die im Rahmen des</p>
       <p>„Local Heroes“-Auftritts von THE VINTAGE CINEMA CLUB am 12.12.2025 im Rockhouse</p>
@@ -28,8 +35,8 @@ import { SITE_URL } from '../lib/site';
       <p class="gap" style="--n:5"></p>
 
       <div class="song song-nttb">
-        <Img src="149dd1_c354feb71c6a48e7bb7f2605b549a3bf.png" alt="NTTB_cover_final_gr.png" w={316} h={316} class="song-cover" />
-        <p class="pink">Next to the Body</p>
+        <Img src="next-to-the-body-live-cover.png" alt="Cover „Next to the Body“ (Live) von The Vintage Cinema Club" w={316} h={316} class="song-cover" />
+        <h3 class="pink">Next to the Body</h3>
         <p>Neue Single und zentraler Song des geplanten zweiten </p>
         <p>Albums. Die Aufnahme von „Next to the Body“ wurde im </p>
         <p>Anschluss an die Session von Sebastian Becher (Mix) und </p>
@@ -41,15 +48,15 @@ import { SITE_URL } from '../lib/site';
       </div>
       <p class="gap" style="--n:3"></p>
 
-      <p class="pink just">Eyes Wide Shut</p>
+      <h3 class="pink just">Eyes Wide Shut</h3>
       <p class="just">Neue Nummer des kommenden Albums und Teil der aktuellen Live-Setlist der Band. Der Song wurde im Rahmen der Session erstmals live aufgeführt und repräsentiert die hypnotischere und cineastischere Seite von THE VINTAGE CINEMA CLUB.</p>
       <p class="gap" style="--n:3"></p>
 
-      <p class="pink just">Exposé en Permanence</p>
+      <h3 class="pink just">Exposé en Permanence</h3>
       <p class="just">Song des Debütalbums „Fashion“, bewusst als Kontrast zu den neueren Songs gewählt und repräsentativ für die hypnotisch treibendere und psychedelischere Seite des Sounds von THE VINTAGE CINEMA CLUB.</p>
     </div>
 
-    <h5 class="h pink h-bio">Biografie</h5>
+    <h2 class="h pink h-bio">Biografie</h2>
     <div class="txt wide">
       <p>THE VINTAGE CINEMA CLUB ist eine fünfköpfige Indie/Alternative-Band aus Salzburg, die sich stilistisch zwischen klassischem Britpop, atmosphärischem Alternative Rock und Elektro-New-Wave-Einflüssen bewegt.</p>
       <p>Nach ihrem Debütalbum „Fashion“ arbeitet die Band aktuell an neuem Material für ein zweites Album, dessen Aufnahmen im Herbst 2026 starten sollen. Die neuen Songs verbinden gitarrenlastige, melancholische Soundflächen mit treibenden Rhythmen und einer modernen, cineastischen Atmosphäre.</p>
@@ -60,7 +67,7 @@ import { SITE_URL } from '../lib/site';
       <p>organisatorische Arbeit eigenständig innerhalb der Band.</p>
     </div>
 
-    <h5 class="h pink h-funds">Verwendung der Fördermittel</h5>
+    <h2 class="h pink h-funds">Verwendung der Fördermittel</h2>
     <div class="txt wide">
       <p>Das Preisgeld würde hauptsächlich in die Produktion des geplanten zweiten Albums fließen, dessen Aufnahmen im Herbst 2026 beginnen sollen. Vorgesehen ist dabei eine</p>
       <p>professionelle Umsetzung der Recording-, Mixing- und Mastering-Prozesse in</p>
@@ -69,7 +76,7 @@ import { SITE_URL } from '../lib/site';
       <p>umzusetzen.</p>
     </div>
 
-    <h5 class="home-link"><a href="/" target="_blank">zur Hauptseite<br />www.thevintagecinemaclub.com</a></h5>
+    <p class="home-link"><a href="/" target="_blank">zur Hauptseite<br />www.thevintagecinemaclub.com</a></p>
   </div>
 </Base>
 
@@ -81,8 +88,7 @@ import { SITE_URL } from '../lib/site';
   .tag { margin-top: 0; font-size: 22px; line-height: 30.25px; text-align: center; padding-left: 26px; }
   .player { width: 680px; margin: 57px 0 0 163px; }
   .h { font-size: 28px; line-height: 38.5px; text-align: center; }
-  .h:first-of-type { margin-top: 86px; }
-  .page > .h { margin-top: 86px; }
+    .page > .h { margin-top: 86px; }
   .h-bio { margin-top: 47px !important; }
   .h-funds { margin-top: 50px !important; }
   .txt { width: 904px; margin-left: 22px; font-size: 21px; line-height: 40px; }

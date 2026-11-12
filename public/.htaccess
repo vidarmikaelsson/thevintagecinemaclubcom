@@ -1,6 +1,12 @@
 # Apache config (ignored by other servers). Optional – the site works without it.
 ErrorDocument 404 /404.html
 
+# Legacy URLs of the former site -> permanent redirects
+<IfModule mod_alias.c>
+  RedirectMatch 301 ^/blank/?$ /
+  RedirectMatch 301 ^/fullscreen-page/?$ /
+</IfModule>
+
 <IfModule mod_mime.c>
   AddType font/woff2 .woff2
   AddType audio/mpeg .mp3
