@@ -16,6 +16,8 @@ npm run preview    # serve ./dist locally
 
 ## Deploy
 
+Step-by-step instructions for any host, domain switch from Wix and troubleshooting: **[docs/HOSTING.md](docs/HOSTING.md)**.
+
 Upload the **contents of `dist/`** to the web root of any host (Apache, nginx, IIS, Netlify,
 Vercel, GitHub Pages, S3/CloudFront, shared hosting via FTP). Clean URLs work everywhere
 because every page is emitted as `/<page>/index.html`. `404.html` is the error page;
