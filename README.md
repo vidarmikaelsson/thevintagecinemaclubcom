@@ -1,8 +1,9 @@
 # The Vintage Cinema Club – Astro rebuild
 
-A 1:1 rebuild of https://www.thevintagecinemaclub.com (originally a Wix site) using
+Rebuild of https://www.thevintagecinemaclub.com, formerly a Wix site, using
 [Astro](https://astro.build). The build output is plain static HTML/CSS/JS plus media, so it
-runs on any web host with no Wix, Node or database dependency.
+runs on any web host with no Wix, Node or database dependency. The full report on the rebuild
+and the SEO/GEO optimisation is in `docs/report/TVCC-Website-Report.pdf`.
 
 ## Commands
 
@@ -30,22 +31,26 @@ because every page is emitted as `/<page>/index.html`. `404.html` is the error p
 | `/heimo-erbse-2027` | Heimo Erbse Preis 2027 submission – `noindex` |
 | `/saturdayoverdrive` | Event page: Saturday Overdrive @ Café Carina |
 | `/g5-indie-night` | Event page: G5 Indie Night incl. ntry.at ticket widget |
-| `/fullscreen-page` | Empty Wix system page (kept so the URL exists) |
-| `/blank` | Wix's internal alias of the home page → redirects to `/` |
+| `/blank`, `/fullscreen-page` | Legacy URLs of the former site → redirect to `/` |
+| `/llms.txt` | Factual site summary for AI assistants, generated from `src/data` |
+| `/sitemap-index.xml` | Generated sitemap, indexable pages only |
 
 ## Structure
 
 ```
 src/
   pages/            one .astro file per page
-  layouts/Base.astro  <head>/SEO, background modes, mobile back-to-top button
+  layouts/Base.astro  <head>/SEO meta, background modes, mobile back-to-top button
   components/
     MusicPlayer.astro   Wix Music player replacement (4 layouts, full playback logic)
     VideoGallery.astro  Wix Video "All Videos" channel replacement
     LiveGallery.astro   Pro Gallery slider (autoplay 4s, arrows, swipe, fullscreen lightbox)
     VideoBox.astro      single video with poster + play button
     ShareButtons.astro  WhatsApp / copy link / Facebook buttons
+    SocialIcon.astro    build-time SVG social icons
     Band.astro, IconRow.astro, Img.astro
+  lib/schema.ts       structured data / JSON-LD builders
+  pages/llms.txt.ts   generates /llms.txt
   data/music.json     albums, track titles, durations and audio files (scraped from Wix)
   lib/site.ts         links, e-mail addresses, social icon sets
   assets/media/       all original images (optimised to responsive WebP at build time)
@@ -53,7 +58,7 @@ src/
 public/
   audio/   24 MP3 tracks (the same 128 kbit/s files Wix streamed)
   video/   4 MP4 videos (H.264 720p, re-encoded from Wix's 1080p streams for web size)
-  fonts/   self-hosted fonts (band display face, Montserrat, Anton, Playfair, Benzin, …)
+  fonts/   self-hosted fonts: band display face, Montserrat, Anton, Playfair Display, Unbounded, Bangers
   files/   TVCC_Presskit_2026.zip
 ```
 
@@ -62,14 +67,16 @@ Typical edits:
 - **Tracks / playlists** → `src/data/music.json` (+ MP3 in `public/audio/`)
 - **Social links / e-mail** → `src/lib/site.ts`
 - **Gallery photos** → drop the file into `src/assets/media/` and add it to `live` in `index.astro`
+- **Make a hidden page indexable** (`/nttb`, `/presskit`, `/heimo-erbse-2027`) → remove the `noindex`
+  prop from the page's `<Base>` call AND remove its path from `NOINDEX_PATHS` in `astro.config.mjs`;
+  it then appears in the sitemap automatically. Add it to `src/pages/llms.txt.ts` if AI assistants should see it.
 
-## Differences from the Wix original
+## Differences from the former Wix site
 
-- **Favicon**: Wix served its own logo as favicon; replaced with a TVCC monogram (`public/favicon.svg`).
-- **Footer text** still reads "©2026 von The Vintage Cinema Club. Erstellt mit Wix.com" (kept 1:1) –
-  edit in `src/pages/index.astro` if you want to drop the Wix mention.
-- **Gallery "like" hearts** (Wix reaction counters) need Wix's server and are not reproduced.
-- **YouTube** is embedded via `youtube-nocookie.com` (privacy-friendly, same video/settings).
-- **ntry.at ticket widget** (G5 page) and YouTube are the only third-party embeds and load from those services.
-- **Audio autoplay**: like on Wix, players marked autoplay try to start, but browsers only allow it after user interaction.
-- "zur Hauptseite" links point to `/` instead of the absolute Wix URL.
+- Wix clip-art social icons → SVG icons generated at build time from `simple-icons`, CC0.
+- Wix-library fonts → Benzin replaced by Unbounded, Midnight Terror by Bangers, both SIL OFL;
+  Helvetica Light by the system Helvetica/Arial stack. Licences in `docs/font-licenses/`.
+- Footer credit "Erstellt mit Wix.com" removed; favicon is a TVCC monogram instead of the Wix logo.
+- Gallery "like" hearts relied on Wix servers and are not reproduced.
+- YouTube is embedded via `youtube-nocookie.com`; the ntry.at ticket widget loads from ntry.at.
+- Audio autoplay: players marked autoplay try to start; browsers allow it only after interaction.

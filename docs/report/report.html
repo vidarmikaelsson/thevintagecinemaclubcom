@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Vintage Cinema Club – Website Rebuild and SEO/GEO Report</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+  :root { --pink: #c4279f; --ink: #1d1a24; --muted: #5c5766; --line: #ddd8e3; --soft: #f6f2f8; }
+  * { box-sizing: border-box; }
+  body { font: 10pt/1.5 "Helvetica Neue", Arial, sans-serif; color: var(--ink); margin: 0; }
+  h1 { font-size: 24pt; line-height: 1.15; margin: 0 0 6pt; color: var(--ink); }
+  h2 { font-size: 15pt; margin: 22pt 0 6pt; padding-bottom: 4pt; border-bottom: 2px solid var(--pink); break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 14pt 0 4pt; color: var(--pink); break-after: avoid; }
+  p { margin: 0 0 6pt; }
+  ul, ol { margin: 0 0 8pt; padding-left: 16pt; }
+  li { margin: 0 0 2.5pt; }
+  code { font: 8.6pt/1.3 Menlo, Consolas, monospace; background: var(--soft); padding: 0 2pt; border-radius: 2px; }
+  table { width: 100%; border-collapse: collapse; margin: 4pt 0 10pt; font-size: 8.8pt; break-inside: auto; }
+  th, td { text-align: left; vertical-align: top; padding: 4pt 5pt; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 700; }
+  tr { break-inside: avoid; }
+  figure { margin: 6pt 0 12pt; break-inside: avoid; }
+  figure { text-align: center; }
+  figure img { max-width: 100%; max-height: 92mm; border: 1px solid var(--line); }
+  figcaption { font-size: 8.5pt; color: var(--muted); margin-top: 3pt; }
+  .cover { height: 245mm; display: flex; flex-direction: column; justify-content: space-between; break-after: page; }
+  .cover .kicker { color: var(--pink); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 9pt; }
+  .cover .meta td { border: 0; padding: 2pt 10pt 2pt 0; font-size: 9.5pt; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8pt; margin: 10pt 0; }
+  .kpi { background: var(--soft); border-radius: 4px; padding: 8pt; }
+  .kpi b { display: block; font-size: 16pt; color: var(--pink); }
+  .kpi span { font-size: 8.5pt; color: var(--muted); }
+  .toc li { margin-bottom: 1pt; }
+  .pb { break-before: page; }
+  .ok { color: #1c7c3a; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div>
+    <p class="kicker">Project report</p>
+    <h1>The Vintage Cinema Club<br>Website rebuild, Wix removal and SEO/GEO optimisation</h1>
+    <p style="font-size:11pt;color:var(--muted);max-width:150mm">Rebuild of www.thevintagecinemaclub.com from Wix to a static Astro site, removal of all Wix components and assets, and optimisation for search engines and AI answer engines.</p>
+    <div class="kpis">
+      <div class="kpi"><b>6 + 2</b><span>pages rebuilt, 2 legacy URLs redirected</span></div>
+      <div class="kpi"><b>0</b><span>references to Wix in the build output</span></div>
+      <div class="kpi"><b>29/29</b><span>functional browser tests passed</span></div>
+      <div class="kpi"><b>100</b><span>Lighthouse SEO score on all indexable pages</span></div>
+    </div>
+  </div>
+  <div>
+    <table class="meta">
+      <tr><td><b>Website</b></td><td>https://www.thevintagecinemaclub.com</td></tr>
+      <tr><td><b>Framework</b></td><td>Astro 5.18, static output</td></tr>
+      <tr><td><b>Date</b></td><td>12 November 2026</td></tr>
+      <tr><td><b>Project location</b></td><td>Git repository <code>thevintagecinemaclub</code> with full change history</td></tr>
+    </table>
+    <h3 style="margin-top:14pt">Contents</h3>
+    <ol class="toc">
+      <li>Summary</li>
+      <li>Starting point</li>
+      <li>Reproduction of the website</li>
+      <li>Replacement of Wix components</li>
+      <li>Removal of remaining Wix assets</li>
+      <li>SEO optimisation</li>
+      <li>GEO optimisation</li>
+      <li>Performance and accessibility</li>
+      <li>Decisions made by the client</li>
+      <li>Verification</li>
+      <li>Project structure and operation</li>
+      <li>Next steps</li>
+    </ol>
+  </div>
+</section>
+
+<h2>1. Summary</h2>
+<ul>
+  <li>All 6 content pages of the Wix site were rebuilt in Astro with the same layout, texts, images, audio, video and interactive widgets. The build output is plain HTML, CSS, JavaScript and media files and runs on any web host.</li>
+  <li>All Wix widgets were replaced by own Astro components: 6 music players, a video gallery, a photo slider with fullscreen view, a video box, share buttons and a mobile back-to-top button.</li>
+  <li>All Wix-owned assets were removed or replaced: clip-art social icons, three fonts from the Wix font library, the Wix favicon, the "Erstellt mit Wix.com" credit, a Wix system page and Wix media file names. A scan of the build output finds no reference to Wix.</li>
+  <li>Every page has one H1, a logical heading outline, a factual meta description, complete Open Graph and Twitter tags and descriptive image alt texts. Structured data describes the band, its two releases, the video list and the breadcrumbs.</li>
+  <li>For AI answer engines the site provides a generated <code>/llms.txt</code>, consistent entity data across meta tags, structured data and page text, and a robots.txt that does not block AI crawlers.</li>
+  <li>Lighthouse on mobile: SEO 100, Best Practices 96–100, Performance 93–100 and Accessibility 96–100 on all indexable pages.</li>
+</ul>
+
+<h2>2. Starting point</h2>
+<p>The site ran on Wix. Wix renders pages with its own runtime, loads assets from Wix hosts and stores widget content in Wix apps. Seven pages existed:</p>
+<table>
+  <tr><th>URL</th><th>Content</th><th>Wix setting</th></tr>
+  <tr><td><code>/</code></td><td>Band photo, intro, gigs, release promo, YouTube video, biography, 2 music players, vinyl offer, video gallery, photo slider, footer</td><td>indexed</td></tr>
+  <tr><td><code>/saturdayoverdrive</code></td><td>Event page Saturday Overdrive @ Café Carina, 24.10.2026</td><td>indexed</td></tr>
+  <tr><td><code>/g5-indie-night</code></td><td>Event page G5 Indie Night with ntry.at ticket widget</td><td>indexed</td></tr>
+  <tr><td><code>/nttb</code></td><td>Release page of the single „Next to the Body“ Live</td><td>noindex</td></tr>
+  <tr><td><code>/presskit</code></td><td>Presskit ZIP download</td><td>noindex</td></tr>
+  <tr><td><code>/heimo-erbse-2027</code></td><td>Submission for the Heimo Erbse Preis 2027</td><td>noindex</td></tr>
+  <tr><td><code>/fullscreen-page</code></td><td>Empty Wix system page used by the gallery</td><td>indexed, no content</td></tr>
+</table>
+<p>The Wix sitemap listed only <code>/</code>, <code>/saturdayoverdrive</code> and <code>/g5-indie-night</code>. The other pages were found in the Wix page routing data embedded in the HTML. <code>/blank</code> is the internal Wix URI of the home page.</p>
+
+<h2>3. Reproduction of the website</h2>
+<h3>3.1 Access</h3>
+<p>The cloud environment blocked the website and its asset hosts. The following hosts were added to the environment's network allow list: www.thevintagecinemaclub.com, thevintagecinemaclub.com, static.wixstatic.com, video.wixstatic.com, music.wixstatic.com, static.parastorage.com, siteassets.parastorage.com, viewer-assets.parastorage.com, viewer-apps.parastorage.com, progallery.wixapps.net, tpa.wixapps.net, www-thevintagecinemaclub-com.filesusr.com, 21415aa7-8cff-44a6-ae32-790778b1c63e.filesusr.com, repackager.wixmp.com and gcp-repackager.wixmp.com. These entries are no longer needed and can be removed from the environment settings.</p>
+
+<h3>3.2 Capture of layout, text and typography</h3>
+<ul>
+  <li>Every page was rendered in headless Chromium at 1440 px desktop width and 390 px mobile width. Screenshots were taken viewport by viewport because the home page uses a background image fixed to the viewport, which full-page screenshots do not show.</li>
+  <li>For every Wix component the position, size, colors, borders and image sources were extracted from the rendered DOM.</li>
+  <li>For every text node the font family, size, weight, color, letter spacing, line height, alignment and link target were extracted. The rebuild uses these values directly.</li>
+  <li>The Wix page data files on siteassets.parastorage.com contain the component settings that are not visible in the HTML, for example the YouTube video ID <code>GkgvDeJ73cY</code> with autoplay, loop and controls.</li>
+  <li>Title, description, robots, canonical and Open Graph tags of every page were recorded.</li>
+</ul>
+
+<h3>3.3 Capture of widget content</h3>
+<table>
+  <tr><th>Wix widget</th><th>How the content was obtained</th><th>Result</th></tr>
+  <tr><td>Wix Music, 6 instances</td><td>The widget HTML embeds its data base64-encoded. Decoding it returned album, tracks, durations, audio file names, covers and all style settings.</td><td>6 albums or playlists, 25 track entries, 24 unique MP3 files at 128 kbit/s, layout and color settings per player</td></tr>
+  <tr><td>Wix Video channel</td><td>Direct MP4 files were access-protected. Starting playback in the browser returned tokenised HLS stream URLs, which were downloaded segment by segment and remuxed.</td><td>3 videos in 1080p, poster images, durations and upload dates</td></tr>
+  <tr><td>Wix Video box on <code>/nttb</code></td><td>Direct MP4 file</td><td>1 video, 237 s</td></tr>
+  <tr><td>Wix Pro Gallery</td><td>Gallery settings from the page data</td><td>25 photos, slider layout, 6 px spacing, autoplay every 4 s, loop, click opens fullscreen</td></tr>
+  <tr><td>HTML embed on <code>/g5-indie-night</code></td><td>The embedded file contains a single script from ntry.at</td><td>ntry.at ticket widget</td></tr>
+</table>
+
+<h3>3.4 Assets</h3>
+<ul>
+  <li>62 images were downloaded from static.wixstatic.com at up to 2000 px. 48 are used by the site; the rest were Wix icons or unused video frames and were deleted.</li>
+  <li>24 MP3 files, 94 MB, are the same files Wix streamed.</li>
+  <li>Videos were re-encoded from 1080p to H.264 720p to reduce size from 182–220 MB to 37–65 MB per video. Total video size: 197 MB.</li>
+  <li>The presskit ZIP, 22.8 MB, was downloaded and is served from <code>/files/TVCC_Presskit_2026.zip</code>.</li>
+  <li>Fonts were downloaded as Latin subsets in WOFF2 format and are self-hosted.</li>
+</ul>
+
+<h3>3.5 Build</h3>
+<ul>
+  <li>Astro 5.18 with static output. Each page is generated as <code>/&lt;page&gt;/index.html</code>, which works on every host without server configuration.</li>
+  <li>Desktop layout follows the measured Wix positions in a 980 px content column. Page heights match the original within 8 px on the home page and exactly on the event pages.</li>
+  <li>Mobile layout follows the Wix mobile version: stacked content, scaled typography, back-to-top button.</li>
+  <li>Images are converted at build time to responsive WebP files with several widths and <code>srcset</code>. Example: the 7.3 MB cover PNG on the Heimo Erbse page is delivered as 23 kB WebP at display size, the 2.1 MB release promo PNG as 63 kB.</li><li>A post-build step removes 45 unreferenced source files, 32.6 MB, from the output.</li>
+</ul>
+<figure><img src="img/home-hero.jpg"><figcaption>Figure 1: Home page, top. Left: original Wix site. Right: Astro rebuild.</figcaption></figure>
+<figure><img src="img/saturday.jpg"><figcaption>Figure 2: Event page Saturday Overdrive. Left: original. Right: rebuild with open-licence fonts.</figcaption></figure>
+
+<h2>4. Replacement of Wix components</h2>
+<p>Wix widgets depend on Wix servers and the Wix runtime. Each one was rebuilt as an Astro component with a small amount of client-side JavaScript. No external library is loaded at runtime.</p>
+<table>
+  <tr><th>Wix component</th><th>Astro replacement</th><th>Functions</th></tr>
+  <tr><td>Wix Music player</td><td><code>MusicPlayer.astro</code> with 4 layouts matching the 4 Wix layouts used on the site</td><td>Play, pause, previous, next, seek by click, drag and arrow keys, mute, playlist toggle, track selection, share menu, Get Album link, one player at a time, autoplay attempt as configured in Wix</td></tr>
+  <tr><td>Wix Video channel</td><td><code>VideoGallery.astro</code></td><td>Poster with play button, thumbnail strip, next video on end, share menu, info overlay</td></tr>
+  <tr><td>Wix Pro Gallery slider</td><td><code>LiveGallery.astro</code></td><td>Autoplay every 4 s with loop, arrows, swipe, pause on hover, fullscreen viewer with keyboard and swipe navigation</td></tr>
+  <tr><td>Wix Video box</td><td><code>VideoBox.astro</code></td><td>Poster frame, play button, native controls</td></tr>
+  <tr><td>Wix share buttons</td><td><code>ShareButtons.astro</code></td><td>WhatsApp, copy link, Facebook</td></tr>
+  <tr><td>Wix social bar</td><td><code>IconRow.astro</code> and <code>SocialIcon.astro</code></td><td>Links to Spotify, Apple Music, YouTube, Facebook, Instagram</td></tr>
+  <tr><td>Wix video player for YouTube</td><td>YouTube embed via youtube-nocookie.com</td><td>Same video, autoplay muted, loop, controls</td></tr>
+  <tr><td>Wix HTML embed</td><td><code>iframe</code> with the ntry.at script</td><td>Ticket shop</td></tr>
+  <tr><td>Wix mobile back-to-top button</td><td>Part of <code>Base.astro</code></td><td>Appears after 400 px scroll on mobile</td></tr>
+</table>
+<p>The gallery "like" counter of Wix stores its data on Wix servers and was not rebuilt.</p>
+<figure><img src="img/players-card.jpg"><figcaption>Figure 3: Music players on the home page. Each pair: original Wix widget left, Astro component right.</figcaption></figure>
+<figure><img src="img/players-wide.jpg"><figcaption>Figure 4: Music players on G5 Indie Night, Heimo Erbse Preis, Saturday Overdrive and Next to the Body. Original left, rebuild right.</figcaption></figure>
+
+<h2>5. Removal of remaining Wix assets</h2>
+<p>After the rebuild the site no longer loaded anything from Wix, but it still contained files and texts that originate from Wix. These were replaced because they either belong to Wix, are licensed for Wix sites only, or carry no meaning outside Wix.</p>
+<table>
+  <tr><th>Item</th><th>Reason for change</th><th>Change</th></tr>
+  <tr><td>Social media icons</td><td>The 11 icon PNG files were Wix clip-art from the Wix media library.</td><td>Replaced by inline SVG icons generated at build time from the <code>simple-icons</code> package, licence CC0. Colors, shapes and sizes match the original icons.</td></tr>
+  <tr><td>Font Benzin</td><td>Font from the Wix font library, licensed for use on Wix sites.</td><td>Replaced by Unbounded 400 and 700, SIL Open Font License.</td></tr>
+  <tr><td>Font Midnight Terror</td><td>Font from the Wix font library.</td><td>Replaced by Bangers, SIL Open Font License.</td></tr>
+  <tr><td>Font Helvetica Light</td><td>Font file served by Wix.</td><td>Replaced by the system font stack Helvetica Neue, Helvetica, Arial. Used only for the copyright line and the video button.</td></tr>
+  <tr><td>Footer text "Erstellt mit Wix.com"</td><td>No longer true.</td><td>Removed. The line now reads "©2026 von The Vintage Cinema Club."</td></tr>
+  <tr><td>Favicon</td><td>Wix served its own logo as favicon.</td><td>Replaced by an SVG monogram "TVCC" in the brand colors.</td></tr>
+  <tr><td><code>/fullscreen-page</code></td><td>Empty Wix system page for the gallery fullscreen view.</td><td>Removed. The URL redirects to <code>/</code>.</td></tr>
+  <tr><td><code>/blank</code></td><td>Internal Wix URI of the home page.</td><td>Redirects to <code>/</code>.</td></tr>
+  <tr><td>Media file names</td><td>All images and audio files had Wix media IDs as names, for example <code>149dd1_53ecf591….jpg</code>.</td><td>Renamed to descriptive names, for example <code>tvcc-bandfoto-2026.jpg</code> and <code>fashion-04-19-9.mp3</code>.</td></tr>
+</table>
+<p>The fonts Montserrat, Anton and Playfair Display are Google Fonts under the SIL Open Font License and were kept. The display font of the band was uploaded to Wix by the band and was kept. Licence texts of the new fonts are stored in <code>docs/font-licenses/</code>.</p>
+<p>Result: a case-insensitive search for "wix", "parastorage", "wixstatic" and "filesusr" in all HTML, CSS, JavaScript, text and XML files of the build output returns no match.</p>
+<figure><img src="img/home-footer.jpg"><figcaption>Figure 5: Home page footer with SVG icons and without the Wix credit. Original left, rebuild right.</figcaption></figure>
+
+<h2>6. SEO optimisation</h2>
+<h3>6.1 Audit findings before optimisation</h3>
+<table>
+  <tr><th>Finding</th><th>Effect</th></tr>
+  <tr><td>Home page had 4 H1 headings; body text was marked up as H6.</td><td>Search engines cannot identify the main topic and section structure.</td></tr>
+  <tr><td>5 of 6 subpages had no H1.</td><td>Missing primary topic signal.</td></tr>
+  <tr><td>6 of 7 pages had no meta description.</td><td>Search engines generate snippets from random page text.</td></tr>
+  <tr><td><code>/presskit</code> used the title of <code>/nttb</code>.</td><td>Duplicate title, wrong page description in results and shares.</td></tr>
+  <tr><td>28 of 45 images on the home page had empty alt texts, file names or Wix label keys such as <code>alt.text.label.Facebook</code> as alt text.</td><td>No image search relevance, poor accessibility.</td></tr>
+  <tr><td>Structured data declared the band as <code>LocalBusiness</code>.</td><td>Wrong entity type; no data about music, members or releases.</td></tr>
+  <tr><td>No <code>twitter:image</code>, no image size or alt text in Open Graph, no <code>og:locale</code>.</td><td>Incomplete social previews.</td></tr>
+  <tr><td>Canonical URLs without trailing slash while pages are served at <code>/&lt;page&gt;/</code>.</td><td>Canonical would point to a redirecting URL.</td></tr>
+  <tr><td>Event pages are not linked from any page.</td><td>Crawlers find them only through the sitemap.</td></tr>
+</table>
+
+<h3>6.2 Changes</h3>
+<table>
+  <tr><th>Area</th><th>Change</th><th>Reason</th></tr>
+  <tr><td>Headings</td><td>One H1 per page, H2 and H3 for sections, body text as paragraphs. Heading sizes come from CSS classes, so the visual design did not change. On the event pages and on <code>/nttb</code> the H1 contains the same text that the poster image shows, hidden visually.</td><td>Clear topic and document structure for search engines, AI systems and screen readers.</td></tr>
+  <tr><td>Titles</td><td>Event pages now include venue, city and date; presskit has its own title. See 6.3.</td><td>Unique, descriptive titles improve relevance and click-through.</td></tr>
+  <tr><td>Meta descriptions</td><td>Added to every page, built only from text that appears on the page.</td><td>Controlled search snippets and social previews.</td></tr>
+  <tr><td>Robots meta</td><td>Indexable pages: <code>index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1</code>. Hidden pages: <code>noindex, follow</code>.</td><td>Allows large image and video previews; hidden pages still pass link signals.</td></tr>
+  <tr><td>Canonical</td><td>Absolute URL with trailing slash, matching the served URL. None on the 404 page.</td><td>Avoids canonicalising to redirecting URLs.</td></tr>
+  <tr><td>Open Graph and Twitter</td><td>Type, site name, locale <code>de_AT</code>, title, description, URL, image with width, height and alt text, Twitter image and alt.</td><td>Complete previews on Facebook, WhatsApp, Instagram, X and messaging apps. Locale <code>de-at</code> is the setting of the original Wix site.</td></tr>
+  <tr><td>Image alt texts</td><td>Every content image describes what it shows, for example "The Vintage Cinema Club – Bandfoto 2026: die fünf Bandmitglieder in einem Kinosaal". The release promo image contains all text printed on it.</td><td>Image search relevance and accessibility; text inside images becomes readable for crawlers.</td></tr>
+  <tr><td>Image file names</td><td>Descriptive names, which also become the names of the generated WebP files.</td><td>File names are a ranking signal in image search.</td></tr>
+  <tr><td>Dates</td><td>Gig dates, release date and recording date are marked up with <code>&lt;time datetime&gt;</code>.</td><td>Machine-readable dates.</td></tr>
+  <tr><td>Sitemap</td><td>Generated by <code>@astrojs/sitemap</code> on every build; contains the 3 indexable pages only.</td><td>Stays correct when pages are added or their indexing changes.</td></tr>
+  <tr><td>robots.txt</td><td>Allows all crawlers and references the sitemap.</td><td>Crawlers must be allowed to read pages to see their noindex tags.</td></tr>
+  <tr><td>Redirects</td><td><code>/blank</code> and <code>/fullscreen-page</code> redirect to <code>/</code>; <code>.htaccess</code> sends HTTP 301 on Apache.</td><td>Keeps legacy URLs working and passes their signals to the home page.</td></tr>
+  <tr><td>404 page</td><td>Own error page with link to the home page, noindex.</td><td>Visitors and crawlers get a valid error response.</td></tr>
+  <tr><td>Semantic HTML</td><td>Sections with labels, footer outside the main content, link names that match visible text.</td><td>Better structure for parsing.</td></tr>
+</table>
+
+<h3>6.3 Titles and descriptions</h3>
+<table>
+  <tr><th>Page</th><th>Title before</th><th>Title after</th></tr>
+  <tr><td><code>/</code></td><td>The Vintage Cinema Club | Indie-Rock-Band aus Salzburg, Österreich</td><td>unchanged</td></tr>
+  <tr><td><code>/saturdayoverdrive</code></td><td>Saturday Overdrive at Cafe Carina</td><td>Saturday Overdrive @ Café Carina Wien – 24.10.2026</td></tr>
+  <tr><td><code>/g5-indie-night</code></td><td>G5 Indie Night</td><td>G5 Indie Night – G5 Live Music Bar Wien</td></tr>
+  <tr><td><code>/nttb</code></td><td>The Vintage Cinema Club - Next to the Body (Live)</td><td>Next to the Body (Live) – neue Single | The Vintage Cinema Club</td></tr>
+  <tr><td><code>/presskit</code></td><td>The Vintage Cinema Club - Next to the Body (Live)</td><td>Presskit | The Vintage Cinema Club</td></tr>
+  <tr><td><code>/heimo-erbse-2027</code></td><td>Heimo Erbse Preis 2027 | The Vintage Cinema Club</td><td>unchanged</td></tr>
+</table>
+<p>The home page description of the original site was kept. All other pages received a description of 115–180 characters, for example for <code>/saturdayoverdrive</code>: "Saturday Overdrive im Café Carina, Josefstädter Straße 84 / U-Bahnbogen 42, 1080 Wien – 24.10.2026, Beginn 20:30: The Vintage Cinema Club, Candid und Anjoana K. live."</p>
+
+<h3>6.4 Structured data</h3>
+<p>All structured data is generated in <code>src/lib/schema.ts</code>. Every value is taken from the site content or from the data of the original Wix site.</p>
+<table>
+  <tr><th>Type</th><th>Page</th><th>Content</th><th>Source</th></tr>
+  <tr><td>WebSite</td><td><code>/</code></td><td>Name, URL, language, publisher</td><td>Site</td></tr>
+  <tr><td>MusicGroup</td><td><code>/</code></td><td>Name, short name TVCC, description, genres Indie-Rock, Britpop and Alternative, locations Salzburg and Wien, e-mail, 5 members, band photo, profiles on Spotify, Apple Music, YouTube, Facebook and Instagram</td><td>Home intro text, Heimo Erbse page "Indie/Alternative-Band", member names from the event pages, social links</td></tr>
+  <tr><td>MusicAlbum „Fashion“</td><td><code>/</code></td><td>Debut album, cover, 10 tracks with durations, vinyl offer 25 EUR</td><td>Music player data, biography, vinyl section</td></tr>
+  <tr><td>MusicAlbum „Next to the Body“</td><td><code>/</code></td><td>Single release, publication date 2026-07-10, recording note, cover, track with duration</td><td><code>/nttb</code> page text, player data</td></tr>
+  <tr><td>ItemList of VideoObject</td><td><code>/</code></td><td>3 videos with name, thumbnail, upload date, duration and file URL</td><td>Video metadata of the original Wix site</td></tr>
+  <tr><td>BreadcrumbList</td><td>all subpages</td><td>Home → page</td><td>Site structure</td></tr>
+</table>
+<p>The previous <code>LocalBusiness</code> markup was removed because a band is not a local business.</p>
+
+<h2>7. GEO optimisation</h2>
+<p>Generative engine optimisation targets AI assistants and answer engines that summarise web content. They rely on crawlable text, consistent entity facts and machine-readable data.</p>
+<table>
+  <tr><th>Measure</th><th>Implementation</th><th>Reason</th></tr>
+  <tr><td><code>/llms.txt</code></td><td>Generated at build time from the same data as the pages: band description, genres, origin, members, contact, both releases with tracklist and release date, indexable pages with venue and time data, profile links. Hidden pages are not listed.</td><td>Proposed convention from llmstxt.org that gives AI systems a compact, factual summary. It cannot drift from the page content because both use the same source data.</td></tr>
+  <tr><td>Consistent entity facts</td><td>The band description is identical in the page text, meta description, structured data and llms.txt.</td><td>Identical facts across all sources prevent contradicting statements in AI-generated answers.</td></tr>
+  <tr><td>Entity linking</td><td><code>sameAs</code> links to Spotify, Apple Music, YouTube, Facebook and Instagram.</td><td>Connects the website to the band's profiles as one entity.</td></tr>
+  <tr><td>Crawler access</td><td>robots.txt allows all user agents, including AI crawlers.</td><td>Content can be read and cited.</td></tr>
+  <tr><td>Content in HTML</td><td>Tracklists, durations, gig dates, venues and band texts are in the HTML, not only in widgets or images. Text printed in images is repeated in alt texts.</td><td>Many AI crawlers do not execute JavaScript and none read text inside images. On Wix the tracklists were inside third-party iframes loaded by JavaScript.</td></tr>
+  <tr><td>Clear headings and dates</td><td>One H1, section headings, <code>&lt;time&gt;</code> elements.</td><td>Easier extraction of facts and their context.</td></tr>
+</table>
+
+<h2>8. Performance and accessibility</h2>
+<table>
+  <tr><th>Measure</th><th>Reason</th></tr>
+  <tr><td>Responsive WebP images with <code>srcset</code>, lazy loading below the fold</td><td>Smaller downloads, especially on mobile.</td></tr>
+  <tr><td>Largest image of each page preloaded with high fetch priority</td><td>Faster Largest Contentful Paint.</td></tr>
+  <tr><td>Fixed width and height on all images</td><td>No layout shift; CLS 0–0.013.</td></tr>
+  <tr><td>Self-hosted fonts with <code>font-display: swap</code>, display font preloaded</td><td>No third-party font requests, text visible immediately.</td></tr>
+  <tr><td>Audio and video load only on demand</td><td>MP3 and MP4 files are not downloaded on page load.</td></tr>
+  <tr><td>Accessible names that match visible text, labelled buttons, 44 px tap targets for slider arrows and 32 px for share buttons</td><td>Screen reader and touch usability.</td></tr>
+</table>
+<p>Lighthouse 12, mobile emulation, local build:</p>
+<table>
+  <tr><th>Page</th><th>Performance</th><th>Accessibility</th><th>Best Practices</th><th>SEO</th><th>LCP</th><th>CLS</th></tr>
+  <tr><td><code>/</code></td><td>93</td><td>96</td><td>100</td><td>100</td><td>3.2 s</td><td>0</td></tr>
+  <tr><td><code>/saturdayoverdrive</code></td><td>99</td><td>100</td><td>100</td><td>100</td><td>2.0 s</td><td>0.013</td></tr>
+  <tr><td><code>/g5-indie-night</code></td><td>99</td><td>96</td><td>96</td><td>100</td><td>1.8 s</td><td>0.007</td></tr>
+  <tr><td><code>/nttb</code></td><td>99</td><td>100</td><td>100</td><td>69</td><td>2.2 s</td><td>0</td></tr>
+  <tr><td><code>/heimo-erbse-2027</code></td><td>100</td><td>100</td><td>100</td><td>69</td><td>1.6 s</td><td>0</td></tr>
+  <tr><td><code>/presskit</code></td><td>100</td><td>100</td><td>100</td><td>66</td><td>0.9 s</td><td>0</td></tr>
+</table>
+<ul>
+  <li>The SEO score below 100 on <code>/nttb</code>, <code>/heimo-erbse-2027</code> and <code>/presskit</code> is caused only by the noindex setting, which is intended.</li>
+  <li>Accessibility 96 on <code>/</code> and <code>/g5-indie-night</code>: the brand colors do not reach the WCAG contrast ratio of 4.5:1. White on pink in the music players has 3.99:1, the dark red labels on G5 Indie Night have 2.35:1. The colors were kept to preserve the design.</li>
+  <li>Best Practices 96 on <code>/g5-indie-night</code>: the test environment blocked ntry.at, which produced a console error. On a public host the ticket widget loads normally.</li>
+</ul>
+
+<h2>9. Decisions made by the client</h2>
+<table>
+  <tr><th>Question</th><th>Decision</th><th>Implementation</th></tr>
+  <tr><td>Fonts from the Wix font library</td><td>Replace with free fonts</td><td>Unbounded, Bangers and system Helvetica/Arial, see section 5</td></tr>
+  <tr><td>Indexing of <code>/nttb</code>, <code>/presskit</code>, <code>/heimo-erbse-2027</code></td><td>Keep hidden as on Wix; document how to change it</td><td>noindex kept; excluded from sitemap and llms.txt; instructions below</td></tr>
+  <tr><td>Event structured data</td><td>Do not add now; list as recommendation</td><td>No MusicEvent markup; see section 12</td></tr>
+  <tr><td>Internal links to the event pages</td><td>Do not add; list as recommendation</td><td>No link changes; see section 12</td></tr>
+</table>
+<h3>Making a hidden page indexable</h3>
+<ol>
+  <li>Remove the <code>noindex</code> attribute from the <code>&lt;Base&gt;</code> call at the top of the page file, for example <code>src/pages/nttb.astro</code>.</li>
+  <li>Remove the path from <code>NOINDEX_PATHS</code> in <code>astro.config.mjs</code>. The page then appears in the sitemap on the next build.</li>
+  <li>Optional: add the page to <code>src/pages/llms.txt.ts</code>.</li>
+  <li>Run <code>npm run build</code> and upload <code>dist/</code>.</li>
+</ol>
+
+<h2>10. Verification</h2>
+<table>
+  <tr><th>Check</th><th>Result</th></tr>
+  <tr><td>Visual comparison with the original at 1440 px, viewport by viewport, for all pages</td><td>Layout, typography, colors and images match; page heights within 8 px</td></tr>
+  <tr><td>Automated browser tests: audio playback, track change, seek, mute, playlist toggle, share menu, single active player, video gallery, slider arrows and autoplay, fullscreen viewer, video box, event page players, copy link, presskit download, legacy redirect, 404</td><td class="ok">29 of 29 passed</td></tr>
+  <tr><td>Horizontal overflow at 390 px on all pages</td><td class="ok">none</td></tr>
+  <tr><td>Local references in all generated files</td><td class="ok">no missing file</td></tr>
+  <tr><td>Absolute URLs in canonical, Open Graph and structured data</td><td class="ok">all resolve to existing files</td></tr>
+  <tr><td>References to Wix hosts or Wix strings in the build output</td><td class="ok">none</td></tr>
+  <tr><td>Structured data syntax</td><td class="ok">valid JSON-LD on all pages</td></tr>
+</table>
+<figure><img src="img/mobile.jpg"><figcaption>Figure 6: Mobile view at 390 px: home, Saturday Overdrive, G5 Indie Night, Next to the Body, Heimo Erbse Preis.</figcaption></figure>
+
+<h2>11. Project structure and operation</h2>
+<table>
+  <tr><th>Path</th><th>Content</th></tr>
+  <tr><td><code>src/pages/</code></td><td>One file per page, <code>llms.txt.ts</code>, 404 page</td></tr>
+  <tr><td><code>src/layouts/Base.astro</code></td><td>Head with all SEO tags, background modes, back-to-top button</td></tr>
+  <tr><td><code>src/components/</code></td><td>Music player, video gallery, photo slider, video box, share buttons, social icons, band block, image component</td></tr>
+  <tr><td><code>src/data/music.json</code></td><td>Albums, tracks, durations, audio files</td></tr>
+  <tr><td><code>src/lib/site.ts</code>, <code>schema.ts</code></td><td>Links, e-mail addresses, structured data builders</td></tr>
+  <tr><td><code>src/assets/media/</code></td><td>48 source images, optimised at build time</td></tr>
+  <tr><td><code>public/</code></td><td>Audio, video, fonts, presskit, robots.txt, .htaccess, favicon</td></tr>
+  <tr><td><code>docs/</code></td><td>This report, font licences</td></tr>
+</table>
+<p>Commands: <code>npm install</code>, <code>npm run dev</code> for local development, <code>npm run build</code> to create <code>dist/</code>. The content of <code>dist/</code>, 328 MB including media, is uploaded to the web root of any host. On Apache, <code>.htaccess</code> adds 301 redirects, the 404 page and caching headers; other hosts serve <code>404.html</code> automatically.</p>
+
+<h2>12. Next steps</h2>
+<h3>Launch</h3>
+<ol>
+  <li>Publish the site on the new host and switch the domain. Keep the URL paths; requests to <code>/nttb</code> are redirected to <code>/nttb/</code> by the server.</li>
+  <li>Verify the domain in Google Search Console and Bing Webmaster Tools, submit <code>/sitemap-index.xml</code>, check indexing and the legacy redirects.</li>
+  <li>Test the structured data of the live site with the Google Rich Results Test and the Schema.org validator.</li>
+  <li>Remove the Wix network hosts listed in section 3.1 from the cloud environment.</li>
+</ol>
+<h3>SEO and GEO, recommended by the client decisions</h3>
+<ol>
+  <li>Add <code>MusicEvent</code> structured data for upcoming gigs with date, start time, venue address and ticket offers. The G5 Indie Night page has no date on the page; it is needed for this markup.</li>
+  <li>Link the event pages from the home page, for example from the matching gig entry, so crawlers and visitors reach them.</li>
+  <li>Make <code>/nttb</code> indexable. It is the only page with release-specific content for „Next to the Body“.</li>
+</ol>
+<h3>Content that requires information from the band</h3>
+<ol>
+  <li>Create or update entries on Wikidata, MusicBrainz and Discogs and add them to <code>sameAs</code>. Search engines and AI systems use these databases to identify music entities.</li>
+  <li>Add a discography section with release dates of all releases, label and credits.</li>
+  <li>Add member roles, founding year and press quotes to the band text and the structured data.</li>
+  <li>Add photographer credits to the live photos. Watermarks show "Lisa Kutzelnig Photography" and "Michael Klimt".</li>
+  <li>Add structured data for the YouTube live video once its upload date is confirmed.</li>
+  <li>Publish gigs on Bandsintown or Songkick; these services distribute concert listings to music and search platforms.</li>
+  <li>Consider an English version with <code>hreflang</code> if the band targets audiences outside German-speaking countries.</li>
+</ol>
+<h3>Maintenance</h3>
+<ol>
+  <li>Confirm the licence of the band's display font, which was uploaded to Wix by the band; Wix lists it as "Beon Medium".</li>
+  <li>Upgrade Astro to the next major version. <code>npm audit</code> reports vulnerabilities in build tools: Astro, sharp, esbuild and zod. They affect the build environment only, not the published static files.</li>
+  <li>Remove the macOS <code>__MACOSX</code> entries from the presskit ZIP.</li>
+  <li>Review brand color contrast for WCAG AA, see section 8.</li>
+  <li>Update or archive past event pages and the gig list after each event.</li>
+  <li>Consider hosting the long videos on YouTube or a video CDN to reduce hosting storage and bandwidth; the four videos total 197 MB.</li>
+  <li>Add privacy-friendly analytics if traffic data is needed; the site contains no tracking.</li>
+</ol>
+
+</body>
+</html>
