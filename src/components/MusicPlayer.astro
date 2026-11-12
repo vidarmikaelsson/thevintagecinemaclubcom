@@ -160,7 +160,7 @@ const timeSep = variant === 'card' ? '/' : ' / ';
   <ol class="mp-list" data-list hidden={variant === 'compact'}>
     {album.tracks.map((t, i) => (
       <li class="mp-row" data-index={i}>
-        <button class="mp-row-btn" type="button" data-track={i} aria-label={`Titel ${i + 1} abspielen: ${t.title}`}>
+        <button class="mp-row-btn" type="button" data-track={i} title={`Titel ${i + 1} abspielen`}>
           <span class="mp-num">
             <span class="n">{i + 1}</span>
             <svg class="i-eq" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path class="p" d="M9.6 8h1.6v8H9.6zM12.8 8h1.6v8h-1.6z" fill="currentColor"/><path class="pl" d="M10 8v8l6-4z" fill="currentColor"/></svg>
@@ -236,6 +236,7 @@ const timeSep = variant === 'card' ? '/' : ' / ';
   .mp-row-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mp-row-dur { flex: none; font-size: calc(var(--mp-fs3) * .8); font-variant-numeric: tabular-nums; }
   .mp-row-btn:hover .mp-row-title { opacity: .75; }
+  .mp-row-share { width: 32px; height: 32px; }
   .mp-row-share svg { width: 16px; height: 16px; }
   .mp.list-hidden .mp-list { visibility: hidden; }
 

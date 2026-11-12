@@ -48,7 +48,7 @@ const first = videos[0];
   <ul class="vg-strip">
     {videos.map((v, i) => (
       <li>
-        <button class="vg-thumb" type="button" data-vg-item={i} data-src={v.src} data-poster={posters[i].src} data-title={v.title} data-duration={v.duration} aria-label={`Video abspielen: ${v.name ?? v.title}`}>
+        <button class="vg-thumb" type="button" data-vg-item={i} data-src={v.src} data-poster={posters[i].src} data-title={v.title} data-duration={v.duration} title={`Video abspielen: ${v.name ?? v.title}`}>
           <Img src={v.poster} alt={`Video: ${v.name ?? v.title} – The Vintage Cinema Club`} w={220} h={128} />
           <span class="vg-thumb-over">
             <span class="vg-thumb-title">{v.title}</span>
