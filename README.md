@@ -12,7 +12,12 @@ npm install        # once
 npm run dev        # local dev server on http://localhost:4321
 npm run build      # static site -> ./dist
 npm run preview    # serve ./dist locally
+npm run build:upload  # build and refresh ./ready-to-upload
 ```
+
+`ready-to-upload/` contains the finished website, an exact copy of `dist/` from the last
+`npm run build:upload`. Its contents can be uploaded to any web host without building.
+After changing the site, run `npm run build:upload` and commit the folder so it stays current.
 
 ## Deploy
 

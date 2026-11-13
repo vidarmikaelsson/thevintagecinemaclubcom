@@ -8,7 +8,8 @@
     "dev": "astro dev",
     "build": "astro build && node scripts/prune-unused-assets.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "build:upload": "npm run build && node scripts/update-upload-folder.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
